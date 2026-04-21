@@ -18,12 +18,12 @@ class ViewController: UIViewController{
         ]
     
     override func viewDidLoad() {
-            super.viewDidLoad()
-            setupTableView()
-            
-            addButton.layer.cornerRadius = 20
-            addButton.clipsToBounds = true
-        }
+        super.viewDidLoad()
+        setupTableView()
+        
+        addButton.layer.cornerRadius = 20
+        addButton.clipsToBounds = true
+    }
     func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
@@ -31,8 +31,8 @@ class ViewController: UIViewController{
         tableView.register(TaskCell.self, forCellReuseIdentifier: "TaskCell")
     }
     @IBAction func addButtonTapped(_ sender: UIButton) {
-            showAddTaskPopup()
-        }
+        showAddTaskPopup()
+    }
 }
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
