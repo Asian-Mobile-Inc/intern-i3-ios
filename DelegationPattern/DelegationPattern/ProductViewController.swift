@@ -13,7 +13,21 @@ class ProductViewController: UIViewController {
     
     @IBOutlet weak var tableView : UITableView!
     
+    lazy var searchBarView: SearchBarView = {
+        let view = SearchBarView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 60))
+        view.delegate = self
+        return view
+    }()
+    
     var products: [Product] = Product.sampleData
+    var filteredProducts: [Product] = []
+    var isSearching: Bool { !searchText.isEmpty }
+    var searchText = ""
+    
+    var currentProducts: [Product] {
+        return isSearching ? filteredProducts : products
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
@@ -29,18 +43,19 @@ class ProductViewController: UIViewController {
 
         tableView.rowHeight = 80
         tableView.separatorStyle = .singleLine
-        }
+        tableView.tableHeaderView = searchBarView
+    }
     
 }
 
 extension ProductViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return products.count
+        return currentProducts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCell", for: indexPath) as! ProductCell
-       let product = products[indexPath.row]
+       let product = currentProducts[indexPath.row]
        cell.configure(with: product)
 
        cell.delegate = self
@@ -53,7 +68,7 @@ extension ProductViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let product = products[indexPath.row]
+        let product = currentProducts[indexPath.row]
         showDetail(for: product)
     }
 
@@ -69,7 +84,12 @@ extension ProductViewController: UITableViewDelegate {
     }
 
     private func deleteProduct(at indexPath: IndexPath) {
-        products.remove(at: indexPath.row)
+        if isSearching {
+            let product = filteredProducts.remove(at: indexPath.row)
+            products.removeAll { $0.id == product.id }
+        } else {
+            products.remove(at: indexPath.row)
+        }
         tableView.deleteRows(at: [indexPath], with: .automatic)
     }
 
@@ -89,8 +109,47 @@ extension ProductViewController: ProductCellDelegate {
 
     func productCell(_ cell: ProductCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
-        products[indexPath.row].isFavorite.toggle()
+        if isSearching {
+            filteredProducts[indexPath.row].isFavorite.toggle()
+            if let idx = products.firstIndex(where: { $0.id == filteredProducts[indexPath.row].id }) {
+                products[idx].isFavorite = filteredProducts[indexPath.row].isFavorite
+            }
+        } else {
+            products[indexPath.row].isFavorite.toggle()
+        }
 
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
+}
+
+extension ProductViewController: SearchBarViewDelegate {
+    func searchBarView(_ view: SearchBarView, didChangeText text: String) {
+        searchText = text
+        if text.isEmpty {
+            filteredProducts = []
+        } else {
+            filteredProducts = products.filter {
+                $0.name.localizedCaseInsensitiveContains(text) ||
+                $0.category.localizedCaseInsensitiveContains(text)
+            }
+        }
+
+        tableView.reloadData()
+    }
+    
+    func searchBarViewDidBeginEditing(_ view: SearchBarView) {
+           navigationItem.rightBarButtonItem = UIBarButtonItem(
+               title: "Huỷ", style: .plain, target: self,
+               action: #selector(cancelSearch)
+           )
+       }
+
+       @objc private func cancelSearch() {
+           searchBarView.searchTextField.resignFirstResponder()
+           searchBarView.searchTextField.text = ""
+           searchText = ""
+           filteredProducts = []
+           navigationItem.rightBarButtonItem = nil
+           tableView.reloadData()
+       }
 }
