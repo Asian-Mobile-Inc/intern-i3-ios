@@ -1,2 +1,0 @@
-Target dependency graph (1 target)
-Target 'VCLifecycle' in project 'VCLifecycle' (no dependencies)
