@@ -1,0 +1,79 @@
+{
+  "" : {
+    "diagnostics" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/VCLifecycle-primary.dia",
+    "emit-module-dependencies" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/VCLifecycle-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/VCLifecycle-primary-emit-module.dia",
+    "pch" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/VCLifecycle-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/VCLifecycle-primary.swiftdeps"
+  },
+  "/Users/mac/intern-i3-ios/VCLifecycle/VCLifecycle/AppDelegate.swift" : {
+    "const-values" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/AppDelegate.swiftconstvalues",
+    "dependencies" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/AppDelegate.d",
+    "diagnostics" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/AppDelegate.dia",
+    "index-unit-output-path" : "/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/AppDelegate.o",
+    "llvm-bc" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/AppDelegate.bc",
+    "object" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/AppDelegate.o",
+    "swift-dependencies" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/AppDelegate.swiftdeps",
+    "swiftmodule" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/AppDelegate~partial.swiftmodule"
+  },
+  "/Users/mac/intern-i3-ios/VCLifecycle/VCLifecycle/Controllers/GoalDetailViewController.swift" : {
+    "const-values" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GoalDetailViewController.swiftconstvalues",
+    "dependencies" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GoalDetailViewController.d",
+    "diagnostics" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GoalDetailViewController.dia",
+    "index-unit-output-path" : "/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GoalDetailViewController.o",
+    "llvm-bc" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GoalDetailViewController.bc",
+    "object" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GoalDetailViewController.o",
+    "swift-dependencies" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GoalDetailViewController.swiftdeps",
+    "swiftmodule" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GoalDetailViewController~partial.swiftmodule"
+  },
+  "/Users/mac/intern-i3-ios/VCLifecycle/VCLifecycle/Controllers/GoalListViewController.swift" : {
+    "const-values" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GoalListViewController.swiftconstvalues",
+    "dependencies" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GoalListViewController.d",
+    "diagnostics" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GoalListViewController.dia",
+    "index-unit-output-path" : "/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GoalListViewController.o",
+    "llvm-bc" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GoalListViewController.bc",
+    "object" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GoalListViewController.o",
+    "swift-dependencies" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GoalListViewController.swiftdeps",
+    "swiftmodule" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GoalListViewController~partial.swiftmodule"
+  },
+  "/Users/mac/intern-i3-ios/VCLifecycle/VCLifecycle/Models/Goal.swift" : {
+    "const-values" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/Goal.swiftconstvalues",
+    "dependencies" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/Goal.d",
+    "diagnostics" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/Goal.dia",
+    "index-unit-output-path" : "/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/Goal.o",
+    "llvm-bc" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/Goal.bc",
+    "object" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/Goal.o",
+    "swift-dependencies" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/Goal.swiftdeps",
+    "swiftmodule" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/Goal~partial.swiftmodule"
+  },
+  "/Users/mac/intern-i3-ios/VCLifecycle/VCLifecycle/SceneDelegate.swift" : {
+    "const-values" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/SceneDelegate.swiftconstvalues",
+    "dependencies" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/SceneDelegate.d",
+    "diagnostics" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/SceneDelegate.dia",
+    "index-unit-output-path" : "/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/SceneDelegate.o",
+    "llvm-bc" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/SceneDelegate.bc",
+    "object" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/SceneDelegate.o",
+    "swift-dependencies" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/SceneDelegate.swiftdeps",
+    "swiftmodule" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/SceneDelegate~partial.swiftmodule"
+  },
+  "/Users/mac/intern-i3-ios/VCLifecycle/VCLifecycle/Views/GoalCell.swift" : {
+    "const-values" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GoalCell.swiftconstvalues",
+    "dependencies" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GoalCell.d",
+    "diagnostics" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GoalCell.dia",
+    "index-unit-output-path" : "/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GoalCell.o",
+    "llvm-bc" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GoalCell.bc",
+    "object" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GoalCell.o",
+    "swift-dependencies" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GoalCell.swiftdeps",
+    "swiftmodule" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GoalCell~partial.swiftmodule"
+  },
+  "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Users/mac/intern-i3-ios/VCLifecycle/build/Build/Intermediates.noindex/VCLifecycle.build/Debug-iphonesimulator/VCLifecycle.build/Objects-normal/x86_64/GeneratedAssetSymbols~partial.swiftmodule"
+  }
+}
