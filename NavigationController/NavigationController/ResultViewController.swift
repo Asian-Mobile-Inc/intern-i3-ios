@@ -46,15 +46,12 @@ class ResultViewController: UIViewController {
     // MARK: - Setup Result UI
     private func setupResultUI() {
         let percentage = Double(score) / Double(total) * 100
-        
-        // --- Emoji Label ---
+   
         emojiLabel.translatesAutoresizingMaskIntoConstraints = false
-        emojiLabel.text = emojiForScore(percentage: percentage)
         emojiLabel.font = UIFont.systemFont(ofSize: 80)
         emojiLabel.textAlignment = .center
         view.addSubview(emojiLabel)
         
-        // --- Title Label ---
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = testTitle
         titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -62,15 +59,12 @@ class ResultViewController: UIViewController {
         titleLabel.textAlignment = .center
         view.addSubview(titleLabel)
         
-        // --- Score Label ---
         scoreLabel.translatesAutoresizingMaskIntoConstraints = false
         scoreLabel.text = "\(score) / \(total)"
         scoreLabel.font = UIFont.systemFont(ofSize: 48, weight: .bold)
-        scoreLabel.textColor = colorForScore(percentage: percentage)
         scoreLabel.textAlignment = .center
         view.addSubview(scoreLabel)
         
-        // --- Message Label ---
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         messageLabel.text = messageForScore(percentage: percentage)
         messageLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
@@ -79,7 +73,6 @@ class ResultViewController: UIViewController {
         messageLabel.numberOfLines = 0
         view.addSubview(messageLabel)
         
-        // --- Home Button ---
         homeButton.translatesAutoresizingMaskIntoConstraints = false
         homeButton.setTitle("Về Home", for: .normal)
         homeButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
@@ -91,27 +84,22 @@ class ResultViewController: UIViewController {
         
         // MARK: - Auto Layout
         NSLayoutConstraint.activate([
-            // Emoji
             emojiLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             emojiLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 60),
             
-            // Title
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             titleLabel.topAnchor.constraint(equalTo: emojiLabel.bottomAnchor, constant: 16),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
-            // Score
             scoreLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             scoreLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
             
-            // Message
             messageLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             messageLabel.topAnchor.constraint(equalTo: scoreLabel.bottomAnchor, constant: 16),
             messageLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
             messageLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
             
-            // Home Button
             homeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             homeButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
             homeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
@@ -122,27 +110,9 @@ class ResultViewController: UIViewController {
     
     // MARK: - Actions
     @objc private func goHome() {
-        // Quay về root (HomeViewController)
         navigationController?.popToRootViewController(animated: true)
     }
-    
-    // MARK: - Helpers
-    private func emojiForScore(percentage: Double) -> String {
-        switch percentage {
-        case 90...100: return "🏆"
-        case 70..<90:  return "😊"
-        case 50..<70:  return "🤔"
-        default:       return "😢"
-        }
-    }
-    
-    private func colorForScore(percentage: Double) -> UIColor {
-        switch percentage {
-        case 70...100: return .systemGreen
-        case 50..<70:  return .systemOrange
-        default:       return .systemRed
-        }
-    }
+
     
     private func messageForScore(percentage: Double) -> String {
         switch percentage {

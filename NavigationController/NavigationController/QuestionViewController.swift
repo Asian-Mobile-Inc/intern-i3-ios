@@ -21,7 +21,6 @@ class QuestionViewController: UIViewController {
     private var answerButtons: [UIButton] = []
     private let stackView = UIStackView()
     
-    // Init để nhận dữ liệu (Initializer Injection)
     init(test: Test, questionIndex: Int, currentScore: Int) {
         self.test = test
         self.questionIndex = questionIndex
@@ -42,7 +41,6 @@ class QuestionViewController: UIViewController {
     private func setupNavigationBar() {
         title = "Câu \(questionIndex + 1)/\(test.questions.count)"
         
-        // Tạo nút "X" ở góc phải
         let closeButton = UIBarButtonItem(image: UIImage(systemName: "xmark"),
                                           style: .plain,
                                           target: self,
@@ -52,7 +50,6 @@ class QuestionViewController: UIViewController {
     }
     
     @objc private func exitTest() {
-        // Quay thẳng về Home (Gốc của Navigation Stack)
         navigationController?.popToRootViewController(animated: true)
     }
     
@@ -60,7 +57,6 @@ class QuestionViewController: UIViewController {
     private func setupQuestionUI() {
         let question = test.questions[questionIndex]
         
-        // --- Progress View ---
         progressView.translatesAutoresizingMaskIntoConstraints = false
         progressView.progressTintColor = .systemBlue
         progressView.trackTintColor = .systemGray5
@@ -70,7 +66,6 @@ class QuestionViewController: UIViewController {
         progressView.setProgress(progress, animated: false)
         view.addSubview(progressView)
         
-        // --- Score Label (hiện điểm hiện tại) ---
         scoreLabel.translatesAutoresizingMaskIntoConstraints = false
         scoreLabel.text = "Điểm: \(currentScore)"
         scoreLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
@@ -78,7 +73,6 @@ class QuestionViewController: UIViewController {
         scoreLabel.textAlignment = .right
         view.addSubview(scoreLabel)
         
-        // --- Question Number Label ---
         questionNumberLabel.translatesAutoresizingMaskIntoConstraints = false
         questionNumberLabel.text = "Câu hỏi \(questionIndex + 1) / \(test.questions.count)"
         questionNumberLabel.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
@@ -86,7 +80,6 @@ class QuestionViewController: UIViewController {
         questionNumberLabel.textAlignment = .left
         view.addSubview(questionNumberLabel)
         
-        // --- Question Label ---
         questionLabel.translatesAutoresizingMaskIntoConstraints = false
         questionLabel.text = question.text
         questionLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold)
@@ -95,14 +88,12 @@ class QuestionViewController: UIViewController {
         questionLabel.textAlignment = .center
         view.addSubview(questionLabel)
         
-        // --- Answer Buttons StackView ---
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.spacing = 16
         stackView.distribution = .fillEqually
         view.addSubview(stackView)
         
-        // Tạo 4 nút đáp án (A, B, C, D)
         let prefixes = ["A", "B", "C", "D"]
         for (index, option) in question.options.enumerated() {
             let button = UIButton(type: .system)
@@ -124,27 +115,23 @@ class QuestionViewController: UIViewController {
         
         // MARK: - Auto Layout Constraints
         NSLayoutConstraint.activate([
-            // Progress View
+
             progressView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             progressView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             progressView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             progressView.heightAnchor.constraint(equalToConstant: 8),
             
-            // Score Label
             scoreLabel.topAnchor.constraint(equalTo: progressView.bottomAnchor, constant: 12),
             scoreLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
-            // Question Number Label
             questionNumberLabel.topAnchor.constraint(equalTo: progressView.bottomAnchor, constant: 12),
             questionNumberLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             questionNumberLabel.trailingAnchor.constraint(equalTo: scoreLabel.leadingAnchor, constant: -8),
             
-            // Question Label
             questionLabel.topAnchor.constraint(equalTo: questionNumberLabel.bottomAnchor, constant: 30),
             questionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             questionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
-            // Answer StackView
             stackView.topAnchor.constraint(equalTo: questionLabel.bottomAnchor, constant: 40),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
@@ -157,25 +144,20 @@ class QuestionViewController: UIViewController {
         let question = test.questions[questionIndex]
         let isCorrect = (selectedIndex == question.correctAnswerIndex)
         
-        // Disable tất cả nút sau khi chọn (tránh nhấn nhiều lần)
         answerButtons.forEach { $0.isUserInteractionEnabled = false }
         
-        // Highlight đáp án đúng/sai
         highlightAnswers(selectedIndex: selectedIndex, correctIndex: question.correctAnswerIndex)
         
-        // Chờ 1 giây rồi chuyển sang câu tiếp theo
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             self?.answerTapped(isCorrect: isCorrect)
         }
     }
     
     private func highlightAnswers(selectedIndex: Int, correctIndex: Int) {
-        // Highlight đáp án đúng bằng màu xanh
         let correctButton = answerButtons[correctIndex]
         correctButton.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.3)
         correctButton.layer.borderColor = UIColor.systemGreen.cgColor
         
-        // Nếu chọn sai, highlight đáp án đã chọn bằng màu đỏ
         if selectedIndex != correctIndex {
             let wrongButton = answerButtons[selectedIndex]
             wrongButton.backgroundColor = UIColor.systemRed.withAlphaComponent(0.3)
@@ -189,11 +171,9 @@ class QuestionViewController: UIViewController {
         let nextIndex = questionIndex + 1
         
         if nextIndex < test.questions.count {
-            // Còn câu hỏi -> Push tiếp màn hình câu hỏi tiếp theo
             let nextVC = QuestionViewController(test: test, questionIndex: nextIndex, currentScore: nextScore)
             navigationController?.pushViewController(nextVC, animated: true)
         } else {
-            // Hết câu hỏi -> Push sang màn hình kết quả
             let resultVC = ResultViewController(score: nextScore, total: test.questions.count, testTitle: test.title)
             navigationController?.pushViewController(resultVC, animated: true)
         }
