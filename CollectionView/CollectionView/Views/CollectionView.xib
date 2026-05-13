@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CollectionView" customModule="CollectionView" customModuleProvider="target">
+            <connections>
+                <outlet property="addingButton" destination="zp2-L1-51Z" id="mha-xK-ygT"/>
+                <outlet property="collectionView" destination="oZz-yc-VWU" id="lir-MU-YGi"/>
+                <outlet property="contentView" destination="iN0-l3-epB" id="Juh-bq-h1x"/>
+                <outlet property="subtitleLabel" destination="BBu-IK-iHt" id="zc6-HW-QFh"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="8PZ-gD-ryp">
+                    <rect key="frame" x="8" y="50" width="359" height="583"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" spacing="91" translatesAutoresizingMaskIntoConstraints="NO" id="9qG-Qe-F9F">
+                            <rect key="frame" x="0.0" y="0.0" width="359" height="38"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BBu-IK-iHt">
+                                    <rect key="frame" x="0.0" y="0.0" width="193" height="38"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zp2-L1-51Z">
+                                    <rect key="frame" x="284" y="0.0" width="75" height="38"/>
+                                    <state key="normal" title="Button"/>
+                                    <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                </button>
+                            </subviews>
+                        </stackView>
+                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="oZz-yc-VWU">
+                            <rect key="frame" x="0.0" y="50" width="359" height="533"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="I3x-e0-IK2">
+                                <size key="itemSize" width="128" height="128"/>
+                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            </collectionViewFlowLayout>
+                        </collectionView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="9qG-Qe-F9F" secondAttribute="trailing" id="4lt-b3-dvv"/>
+                        <constraint firstItem="9qG-Qe-F9F" firstAttribute="leading" secondItem="8PZ-gD-ryp" secondAttribute="leading" id="Jgw-hS-RP1"/>
+                        <constraint firstItem="9qG-Qe-F9F" firstAttribute="top" secondItem="8PZ-gD-ryp" secondAttribute="top" id="eZz-jk-bmH"/>
+                        <constraint firstItem="oZz-yc-VWU" firstAttribute="top" secondItem="9qG-Qe-F9F" secondAttribute="bottom" constant="12" id="rh7-Ur-GqU"/>
+                    </constraints>
+                </stackView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="8PZ-gD-ryp" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="8" id="161-pv-zqd"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="8PZ-gD-ryp" secondAttribute="trailing" constant="8" id="7Aj-DC-AeI"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="8PZ-gD-ryp" secondAttribute="bottom" id="grK-PM-Fyn"/>
+                <constraint firstItem="8PZ-gD-ryp" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="50" id="olg-8C-Pyq"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="138.1679389312977" y="153.16901408450704"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
