@@ -13,7 +13,13 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setupProfile()
-        
+        let superview = UIView(frame: CGRect(x: 100, y: 100, width: 200, height: 200))
+        let subview = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        superview.bounds.origin = CGPoint(x: 20, y: 20)
+        superview.backgroundColor = .red
+        subview.backgroundColor = .blue
+        superview.addSubview(subview)
+        view.addSubview(superview)
     }
     
     private func setupProfile() {
@@ -26,6 +32,8 @@ class ViewController: UIViewController {
         profile2.profileName = "Custom Prof 2"
         profile2.bgColor = .systemPurple
         view.addSubview(profile2)
+        
+        
     }
 
 
