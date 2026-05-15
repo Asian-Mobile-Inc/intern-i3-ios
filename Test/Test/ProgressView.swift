@@ -37,15 +37,15 @@ class ProgressBar: UIView {
                                   height: trackRect.height - inset * 2)
 
    
-//        guard let ctx = UIGraphicsGetCurrentContext() else { return }
-//        ctx.saveGState()
+        guard let ctx = UIGraphicsGetCurrentContext() else { return }
+        ctx.saveGState()
         track.addClip()
 
         let fill = UIBezierPath(roundedRect: progressRect, cornerRadius: cornerRadius - inset)
         progressColor.setFill()
         fill.fill()
 
-//        ctx.restoreGState()
+        ctx.restoreGState()
     }
 }
 
