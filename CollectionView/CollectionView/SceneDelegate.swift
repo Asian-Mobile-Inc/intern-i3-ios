@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
         
-        let rootVC = CollectionViewController(nibName: nil, bundle: nil)
+        let rootVC = ReviewViewController(nibName: nil, bundle: nil)
         window.rootViewController = UINavigationController(rootViewController: rootVC)
         self.window = window
         window.makeKeyAndVisible()
