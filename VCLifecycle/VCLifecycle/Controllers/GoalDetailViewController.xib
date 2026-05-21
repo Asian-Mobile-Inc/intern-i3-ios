@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GoalDetailViewController" customModule="VCLifecycle" customModuleProvider="target">
+            <connections>
+                <outlet property="deadlinePicker" destination="1d6-MG-A9W" id="Lis-dH-Hx6"/>
+                <outlet property="detailTextView" destination="di9-qf-HNF" id="nsy-Ro-Vie"/>
+                <outlet property="doneSwitch" destination="khA-PV-grr" id="RSl-1y-9DC"/>
+                <outlet property="prioritySegment" destination="Chj-aI-IEY" id="mQ5-B5-wzz"/>
+                <outlet property="titleField" destination="ALw-Fn-5Y5" id="tvL-oQ-Iw7"/>
+                <outlet property="view" destination="iN0-l3-epB" id="vw0-Outlet-01"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="p0V-QJ-Rra">
+                    <rect key="frame" x="8" y="128" width="377" height="606"/>
+                    <subviews>
+                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ALw-Fn-5Y5">
+                            <rect key="frame" x="0.0" y="0.0" width="377" height="60"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="60" id="SO7-ql-b2n"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="di9-qf-HNF">
+                            <rect key="frame" x="0.0" y="90" width="377" height="361"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                            <color key="textColor" systemColor="labelColor"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        </textView>
+                        <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="1d6-MG-A9W">
+                            <rect key="frame" x="0.0" y="481" width="377" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="s1u-oz-F1I"/>
+                            </constraints>
+                        </datePicker>
+                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="mYF-9r-1A4">
+                            <rect key="frame" x="0.0" y="561" width="377" height="45"/>
+                            <subviews>
+                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Chj-aI-IEY">
+                                    <rect key="frame" x="0.0" y="7" width="296" height="32"/>
+                                    <segments>
+                                        <segment title="First"/>
+                                        <segment title="Second"/>
+                                    </segments>
+                                </segmentedControl>
+                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="khA-PV-grr">
+                                    <rect key="frame" x="316" y="8.6666666666666288" width="63" height="28"/>
+                                </switch>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="45" id="iVD-a9-cbB"/>
+                            </constraints>
+                        </stackView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="1d6-MG-A9W" firstAttribute="leading" secondItem="p0V-QJ-Rra" secondAttribute="leading" id="FpT-dd-7UB"/>
+                    </constraints>
+                </stackView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="p0V-QJ-Rra" secondAttribute="bottom" constant="50" id="H7k-l8-EjW"/>
+                <constraint firstItem="p0V-QJ-Rra" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="8" id="dcq-Qi-p1l"/>
+                <constraint firstItem="p0V-QJ-Rra" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="10" id="eH7-IC-nea"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="p0V-QJ-Rra" secondAttribute="trailing" constant="8" id="kQL-X0-qiS"/>
+            </constraints>
+            <point key="canvasLocation" x="171.75572519083968" y="136.61971830985917"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
