@@ -49,6 +49,12 @@ extension Product {
                 Item(id: 13, itemTitle: "Coffee Maker", description: "Programmable coffee machine with glass carafe."),
                 Item(id: 14, itemTitle: "Blender", description: "High-speed blender for smoothies and shakes."),
                 Item(id: 15, itemTitle: "Microwave Oven", description: "Compact microwave with multiple presets.")
+            ]),
+            Product(title: "Kitchen", items: [
+                Item(id: 16, itemTitle: "Coffee Maker", description: "Programmable coffee machine with glass carafe."),
+                Item(id: 17, itemTitle: "Blender", description: "High-speed blender for smoothies and shakes."),
+                Item(id: 18, itemTitle: "Microwave Oven", description: "Compact microwave with multiple presets."),
+               
             ])
         ]
     }
