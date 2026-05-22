@@ -13,7 +13,7 @@ enum TodoListState {
 }
 
 class TodoListViewModel {
-    private var todoList : [[Todo]] = Todo.getTodoList()
+    var todoList : [[Todo]] = Todo.getTodoList()
     var onOutput: ((TodoListState) -> Void)?
     
     var numberOfSections : Int {
@@ -27,7 +27,7 @@ class TodoListViewModel {
         TodoCellViewModel(todo: todoList[section][item])
     }
     
-    func addTask(section: Int, name: String, isDone: Bool = false ) {
+    public func addTask(section: Int, name: String, isDone: Bool = false ) {
         guard !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             onOutput?(.error("Title must not empty!!"))
             return
@@ -38,11 +38,27 @@ class TodoListViewModel {
         onOutput?(.reloadData)
     }
     
-    func removeTask(section: Int, index: Int) {
-        guard todoList[section].indices.contains(index) else {
-            onOutput?(.error("This item isn't exist"))
+    func updateTask(_ updatedTask: Todo, section: Int, itemIndex: Int) {
+        guard let index = todoList[section].firstIndex(where: { $0.id == updatedTask.id }) else {
+            onOutput?(.error("Not found task to update"))
             return
         }
+
+        todoList[section][index] = updatedTask
+        onOutput?(.reloadData)
+        }
+    
+    func removeTask(_ deletedTask: Todo, section: Int, index: Int) {
+//        guard todoList[section].indices.contains(index) else {
+//            onOutput?(.error("This item isn't exist"))
+//            return
+//        }
+        
+        guard let index = todoList[section].firstIndex(where: { $0.id == deletedTask.id }) else {
+            onOutput?(.error("Not found task to delete"))
+            return
+        }
+        
         todoList[section].remove(at: index)
         onOutput?(.reloadData)
     }

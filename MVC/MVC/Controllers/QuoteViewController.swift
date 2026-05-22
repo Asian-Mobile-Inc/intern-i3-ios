@@ -10,76 +10,50 @@ import UIKit
 class QuoteViewController: UIViewController {
     
     private let mainView = QuoteDisplayView()
+    private let viewModel = QuoteViewModel()
     
-    private let quoteService = QuoteService()
-    
-    private var quotes: [Quote] = []
-
     override func loadView() {
         self.view = mainView
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Quotes"
+        mainView.tableView.dataSource = self
+        mainView.tableView.delegate = self
         setupBindings()
-        
-        quoteService.fetchQuotes()
+        viewModel.fetchData()
     }
     
     // MARK: - Config
     private func setupBindings() {
-        quoteService.delegate = self
         
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handleNetworkError(_:)),
-            name: .quoteServiceDidFail,
-            object: nil
-        )
-        
-        mainView.tableView.dataSource = self
-        mainView.tableView.delegate = self
-    }
-    
-    @objc private func handleNetworkError(_ notification: Notification) {
-        let errorMessage = notification.userInfo?["errorMessage"] as? String ?? "Unkowned Error"
-        
-        DispatchQueue.main.async { [weak self] in
-            let alert = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            self?.present(alert, animated: true)
+        viewModel.onStateChanged = { [weak self] state in
+            guard let self = self else { return }
+            
+            switch state {
+            case .loading:
+                break
+            case .loaded:
+                self.mainView.tableView.reloadData()
+            case .error(let message):
+                let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                self.present(alert, animated: true)
+            }
+            
         }
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
 }
 
 // MARK: - QuoteServiceDelegate
-extension QuoteViewController: QuoteServiceDelegate {
-    
-    func quoteService(_ service: QuoteService, didFetchQuote quote: Quote) {
-        DispatchQueue.main.async { [weak self] in
-            self?.quotes.append(quote)
-            self?.mainView.tableView.reloadData()
-        }
-    }
-    
-    func quoteService(_ service: QuoteService, didFetchQuotes quotes: [Quote]) {
-        DispatchQueue.main.async { [weak self] in
-            self?.quotes = quotes
-            self?.mainView.tableView.reloadData()
-        }
-    }
-}
+
 
 // MARK: - UITableViewDataSource
 extension QuoteViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return quotes.count
+        return viewModel.quotes.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -87,7 +61,7 @@ extension QuoteViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        let quote = quotes[indexPath.row]
+        let quote = viewModel.quotes[indexPath.row]
         cell.configure(with: quote, at: indexPath.row)
         cell.delegate = self
         
@@ -111,7 +85,7 @@ extension QuoteViewController: UITableViewDelegate {
 extension QuoteViewController: QuoteCellDelegate {
     
     func quoteCell(_ cell: QuoteCell, didTapHeartAt index: Int) {
-        guard index < quotes.count else { return }
-        quotes[index].isSelected.toggle()
+        guard index < viewModel.quotes.count else { return }
+        viewModel.quotes[index].isSelected.toggle()
     }
 }

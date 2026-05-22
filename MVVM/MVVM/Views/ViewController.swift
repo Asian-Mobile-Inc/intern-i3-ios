@@ -11,7 +11,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    private let viewModel = TodoListViewModel()
+    private let viewModel: TodoListViewModel = TodoListViewModel()
     private var collectionView : UICollectionView!
     private var activityIndicator = UIActivityIndicatorView()
     private var dataSource : UICollectionViewDiffableDataSource<Section, Todo>!
@@ -35,6 +35,7 @@ class ViewController: UIViewController {
         applySnapshot()
         
         bindViewModel()
+        collectionView.delegate = self
     }
     
     func setupCollectionView() {
@@ -58,21 +59,37 @@ class ViewController: UIViewController {
         )
 
         view.addSubview(collectionView)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .add,
+            target: self,
+            action: #selector(didTapAddButton)
+        )
     }
     
+    //MARK: BINDING VIEWMODEL
+    func bindViewModel(){
+        viewModel.onOutput = { [weak self] state in
+            guard let self else { return }
+            
+            switch state {
+            case .reloadData : self.applySnapshot()
+                
+            case .error(let message) : print(message)
+//                self.showAlert(message: message)
+            }
+        }
+    }
+    
+//MARK: DIFFABLE DATASOURCE
     func  setupDataSource(){
-        dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView) { collectionView, indexPath, item in
+        dataSource = UICollectionViewDiffableDataSource<Section, Todo>(collectionView: collectionView) { collectionView, indexPath, item in
             switch indexPath.section {
             case 0:
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "electronicCell", for: indexPath) as! ElectronicCollectionViewCell
-                cell.configure(with: item)
-                return cell
-            case 1:
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "clothingCell", for: indexPath) as! ClothingCollectionViewCell
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "todoCell", for: indexPath) as! TodoCollectionViewCell
                 cell.configure(with: item)
                 return cell
             default:
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "homeCell", for: indexPath) as! HomeCollectionViewCell
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "todoCell", for: indexPath) as! TodoCollectionViewCell
                 cell.configure(with: item)
                 return cell
             }
@@ -96,22 +113,24 @@ class ViewController: UIViewController {
         }
     
     }
-    func applySnapshot(){
+    func applySnapshot(animatedDifference: Bool = true){
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Todo>()
         
-    }
-    func bindViewModel(){
-        viewModel.onOutput = { [weak self] state in
-            guard let self else { return }
-            
-            switch state {
-            case .reloadData : self.collectionView.reloadData()
-                
-            case .error(let message) :
-//                self.showAlert(message: message)
-            }
+        let sections = viewModel.todoList.indices.map { index in
+            Section(id: index, title: "Section \(index + 1)")
         }
+        
+        snapshot.appendSections(sections)
+        
+        for index in viewModel.todoList.indices {
+            let section = sections[index]
+            let items = viewModel.todoList[index]
+            snapshot.appendItems(items, toSection: section)
+        }
+        
+        dataSource.apply(snapshot)
     }
-    
+//MARK: COMPOSITIONAL LAYOUT
     func createLayout() -> UICollectionViewCompositionalLayout {
         let layout = UICollectionViewCompositionalLayout {[weak self] index , env in
             return self?.getLayout(index : index)
@@ -194,5 +213,78 @@ class ViewController: UIViewController {
         
         return section
     }
+    //MARK: ADD TASK
+    @objc private func didTapAddButton() {
+           showTaskInputAlert(
+               title: "Thêm task",
+               taskTitle: nil,
+               taskDescription: nil
+           ) { [weak self] taskTitle, section in
+               self?.viewModel.addTask(section: section, name: taskTitle)
+           }
+       }
+
+       private func showTaskInputAlert(
+           title: String,
+           taskTitle: String?,
+           taskDescription: String?,
+           completion: @escaping (_ title: String, _ section: Int) -> Void
+       ) {
+           let alert = UIAlertController(
+               title: title,
+               message: nil,
+               preferredStyle: .alert
+           )
+
+           alert.addTextField { textField in
+               textField.placeholder = "Nhập title"
+               textField.text = taskTitle
+           }
+
+           alert.addTextField { textField in
+               textField.placeholder = "Section?"
+               textField.text = taskDescription
+           }
+
+           let cancelAction = UIAlertAction(
+               title: "Huỷ",
+               style: .cancel
+           )
+
+           let saveAction = UIAlertAction(
+               title: "Lưu",
+               style: .default
+           ) { _ in
+               let title = alert.textFields?[0].text ?? ""
+               let section = alert.textFields?[1].text ?? ""
+
+               completion(title, Int(section) ?? 2)
+           }
+
+           alert.addAction(cancelAction)
+           alert.addAction(saveAction)
+
+           present(alert, animated: true)
+       }
+
 }
 
+// MARK: COLLECTION VIEW DELEGATE
+extension ViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let detailVM = DetailViewModel(task: viewModel.todoList[indexPath.section][indexPath.item])
+        let detailVC = DetailViewController(viewModel: detailVM)
+        
+        detailVC.onUpdatedTask = { [weak self] state in
+            switch state {
+            case .updatedTask(let updatedTask):
+                self?.viewModel.updateTask(updatedTask, section: indexPath.section, itemIndex: indexPath.row)
+            case .deletedTask(let deletedTask):
+                self?.viewModel.removeTask(deletedTask, section: indexPath.section, index: indexPath.row)
+                
+            }
+            
+        }
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
+}

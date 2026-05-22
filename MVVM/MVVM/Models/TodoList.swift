@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct Todo {
+struct Todo: Hashable {
     let id = UUID()
     var name: String
     var isDone: Bool
 }
 
 extension Todo {
-    static var getTodoList() -> [[Todo]] {
+    static func getTodoList() -> [[Todo]] {
         return [
             [
                 Todo( name: "Buy groceries", isDone: true),
