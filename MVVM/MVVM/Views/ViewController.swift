@@ -12,8 +12,9 @@ import UIKit
 class ViewController: UIViewController {
     
     private let viewModel: TodoListViewModel = TodoListViewModel()
-    private var collectionView : UICollectionView!
-    private var activityIndicator = UIActivityIndicatorView()
+    private weak var collectionView: UICollectionView!
+    private weak var loadingView: UIActivityIndicatorView!
+    private weak var emptyLabel: UILabel!
     private var dataSource : UICollectionViewDiffableDataSource<Section, Todo>!
     
     struct Section: Hashable {
@@ -31,20 +32,22 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
+        setupLoadingView()
+        setupEmptyLabel()
         setupDataSource()
-        applySnapshot()
         
         bindViewModel()
         collectionView.delegate = self
+        viewModel.loadTasks()
     }
     
     func setupCollectionView() {
-        collectionView = UICollectionView(
+        let collectionView = UICollectionView(
             frame: view.bounds,
             collectionViewLayout: createLayout()
         )
 
-        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .systemBackground
 
         collectionView.register(
@@ -59,6 +62,15 @@ class ViewController: UIViewController {
         )
 
         view.addSubview(collectionView)
+        self.collectionView = collectionView
+        
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .add,
             target: self,
@@ -66,19 +78,84 @@ class ViewController: UIViewController {
         )
     }
     
-    //MARK: BINDING VIEWMODEL
-    func bindViewModel(){
-        viewModel.onOutput = { [weak self] state in
-            guard let self else { return }
-            
-            switch state {
-            case .reloadData : self.applySnapshot()
-                
-            case .error(let message) : print(message)
-//                self.showAlert(message: message)
-            }
-        }
+    private func setupLoadingView() {
+        let loadingView = UIActivityIndicatorView(style: .large)
+        loadingView.translatesAutoresizingMaskIntoConstraints = false
+        loadingView.hidesWhenStopped = true
+        
+        view.addSubview(loadingView)
+        self.loadingView = loadingView
+        
+        NSLayoutConstraint.activate([
+            loadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
     }
+    
+    private func setupEmptyLabel() {
+        let emptyLabel = UILabel()
+        emptyLabel.translatesAutoresizingMaskIntoConstraints = false
+        emptyLabel.text = "Không có dữ liệu"
+        emptyLabel.textAlignment = .center
+        emptyLabel.textColor = .secondaryLabel
+        emptyLabel.numberOfLines = 0
+        emptyLabel.isHidden = true
+        
+        view.addSubview(emptyLabel)
+        self.emptyLabel = emptyLabel
+        
+        NSLayoutConstraint.activate([
+            emptyLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            emptyLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 24),
+            emptyLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -24)
+        ])
+    }
+    
+    //MARK: BINDING VIEWMODEL
+    private func bindViewModel() {
+           viewModel.state.bind { [weak self] state in
+               self?.render(state)
+           }
+       }
+
+       private func render(_ state: TaskListState) {
+           switch state {
+           case .idle:
+               loadingView.stopAnimating()
+               emptyLabel.isHidden = true
+
+           case .loading:
+               loadingView.startAnimating()
+               emptyLabel.isHidden = true
+
+           case .loaded(let todos):
+               loadingView.stopAnimating()
+               emptyLabel.isHidden = true
+               self.applySnapshot(with: todos)
+
+           case .empty:
+               loadingView.stopAnimating()
+               emptyLabel.isHidden = false
+               self.applySnapshot(with: [])
+
+           case .error(let message):
+               loadingView.stopAnimating()
+               emptyLabel.isHidden = true
+               showAlert(message)
+           }
+       }
+
+       private func showAlert(_ message: String) {
+           let alert = UIAlertController(
+               title: "Lỗi",
+               message: message,
+               preferredStyle: .alert
+           )
+
+           alert.addAction(UIAlertAction(title: "OK", style: .default))
+           present(alert, animated: true)
+       }
     
 //MARK: DIFFABLE DATASOURCE
     func  setupDataSource(){
@@ -113,22 +190,22 @@ class ViewController: UIViewController {
         }
     
     }
-    func applySnapshot(animatedDifference: Bool = true){
+    func applySnapshot(with todoList: [[Todo]], animatedDifference: Bool = true) {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Todo>()
         
-        let sections = viewModel.todoList.indices.map { index in
+        let sections = todoList.indices.map { index in
             Section(id: index, title: "Section \(index + 1)")
         }
         
         snapshot.appendSections(sections)
         
-        for index in viewModel.todoList.indices {
+        for index in todoList.indices {
             let section = sections[index]
-            let items = viewModel.todoList[index]
+            let items = todoList[index]
             snapshot.appendItems(items, toSection: section)
         }
         
-        dataSource.apply(snapshot)
+        dataSource.apply(snapshot, animatingDifferences: animatedDifference)
     }
 //MARK: COMPOSITIONAL LAYOUT
     func createLayout() -> UICollectionViewCompositionalLayout {
