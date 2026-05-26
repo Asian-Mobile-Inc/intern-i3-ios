@@ -6,42 +6,31 @@
 //
 
 import Foundation
-
-
+import Combine
 
 class DetailViewModel {
-    enum Output {
-        case showTask(title: String, isDone: Bool)
-        case didUpdatedTask(Todo)
-        case didDeleteTask(Todo)
-        case showError(String)
-    }
-    var onOutput : ((Output) -> Void)?
-    
-    var task : Todo
+
+    @Published private(set) var task : Todo
+    private(set) var didDeleteTask = PassthroughSubject<Todo, Never>()
+    private(set) var showError = PassthroughSubject<String, Never>()
     
     init(task: Todo) {
         self.task = task
     }
-    func viewDidLoad() {
-        onOutput?(.showTask(title: task.name, isDone: task.isDone))
-    }
+
     func updateTask(title: String?, description: String?) {
         let newTitle = title?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        let newDescription = description?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+//        let newDescription = description?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
 
         guard !newTitle.isEmpty else {
-            onOutput?(.showError("Title must not empty"))
-            onOutput?(.showTask(title: task.name, isDone: task.isDone))
+            showError.send("Title must not empty!")
             return
         }
 
         task.name = newTitle
-
-        onOutput?(.didUpdatedTask(task))
     }
     
     func deleteTask () {
-        onOutput?(.didDeleteTask(task))
+        didDeleteTask.send(task)
     }
 }

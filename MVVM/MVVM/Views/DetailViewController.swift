@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 
 class DetailViewController: UIViewController {
@@ -17,7 +18,7 @@ class DetailViewController: UIViewController {
         case updatedTask(Todo)
         case deletedTask(Todo)
     }
-    
+    private var cancellables = Set<AnyCancellable>()
     private let viewModel : DetailViewModel
     var onUpdatedTask : ((UpdateTask) -> Void)?
     
@@ -33,31 +34,38 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         bindViewModel()
-        viewModel.viewDidLoad()
+        setupUI()
     }
-
+    func setupUI() {
+        taskTitle.text = viewModel.task.name
+        taskDescription.text = viewModel.task.isDone ? "Completed" : "Uncomplete"
+    }
     func bindViewModel() {
-        viewModel.onOutput = { [weak self] state in
-            switch state {
-                
-            case .didUpdatedTask(let updatedTask):
+        viewModel.$task
+            .dropFirst()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] updatedTask in
                 self?.onUpdatedTask?(.updatedTask(updatedTask))
                 self?.navigationController?.popViewController(animated: true)
-                
-            case .didDeleteTask(let deletedTask):
+            }
+            .store(in: &cancellables)
+        
+        viewModel.didDeleteTask
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] deletedTask in
                 self?.onUpdatedTask?(.deletedTask(deletedTask))
                 self?.navigationController?.popViewController(animated: true)
-                
-            case .showTask(let title, let isDone):
-                self?.taskTitle.text = title
-                self?.taskDescription.text = isDone ? "Completed" : "Not completed"
-                
-            case .showError(let message) :
-                let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+            }
+            .store(in: &cancellables)
+        viewModel.showError
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] errorMessage in
+                let alert = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default))
                 self?.present(alert, animated: true)
+                self?.setupUI()
             }
-        }
+            .store(in: &cancellables)
     }
 
     /*

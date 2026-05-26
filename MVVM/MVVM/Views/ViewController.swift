@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import Combine
 
 
 class ViewController: UIViewController {
@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     private weak var loadingView: UIActivityIndicatorView!
     private weak var emptyLabel: UILabel!
     private var dataSource : UICollectionViewDiffableDataSource<Section, Todo>!
+    private var cancellables = Set<AnyCancellable>()
     
     struct Section: Hashable {
         let id : Int
@@ -114,36 +115,20 @@ class ViewController: UIViewController {
     
     //MARK: BINDING VIEWMODEL
     private func bindViewModel() {
-           viewModel.state.bind { [weak self] state in
-               self?.render(state)
-           }
-       }
+        viewModel.$todoList
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newTodoList in
+                self?.applySnapshot(with: newTodoList)
+            }
+            .store(in: &cancellables)
 
-       private func render(_ state: TaskListState) {
-           switch state {
-           case .idle:
-               loadingView.stopAnimating()
-               emptyLabel.isHidden = true
-
-           case .loading:
-               loadingView.startAnimating()
-               emptyLabel.isHidden = true
-
-           case .loaded(let todos):
-               loadingView.stopAnimating()
-               emptyLabel.isHidden = true
-               self.applySnapshot(with: todos)
-
-           case .empty:
-               loadingView.stopAnimating()
-               emptyLabel.isHidden = false
-               self.applySnapshot(with: [])
-
-           case .error(let message):
-               loadingView.stopAnimating()
-               emptyLabel.isHidden = true
-               showAlert(message)
-           }
+        viewModel.$errorMessage
+            .receive(on: DispatchQueue.main)
+            .compactMap { $0 }
+            .sink { [weak self] message in
+                self?.showAlert(message)
+            }
+            .store(in: &cancellables)
        }
 
        private func showAlert(_ message: String) {

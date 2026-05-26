@@ -6,18 +6,11 @@
 //
 
 import Foundation
-
-enum TaskListState {
-    case idle
-    case loading
-    case loaded([[Todo]])
-    case empty
-    case error(String)
-}
+import Combine
 
 class TodoListViewModel {
-    var todoList: [[Todo]] = []
-    let state = Observable<TaskListState>(.idle)
+    @Published private(set) var todoList: [[Todo]] = []
+    @Published private(set) var errorMessage : String? = nil
     
     var numberOfSections : Int {
         todoList.count
@@ -31,8 +24,6 @@ class TodoListViewModel {
     }
     
     func loadTasks() {
-            state.value = .loading
-
             DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
                 let result = Todo.getTodoList()
 
@@ -40,9 +31,9 @@ class TodoListViewModel {
                     self.todoList = result
 
                     if result.isEmpty {
-                        self.state.value = .empty
+                        self.errorMessage = "Data is empty"
                     } else {
-                        self.state.value = .loaded(result)
+                        self.todoList = result
                     }
                 }
             }
@@ -50,23 +41,21 @@ class TodoListViewModel {
     
     public func addTask(section: Int, name: String, isDone: Bool = false ) {
         guard !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            state.value = .error("Title must not empty!!")
+            errorMessage = "Title must not empty!!"
             return
         }
         
         let newTask = Todo(name: name, isDone: isDone)
         todoList[section].append(newTask)
-        state.value = .loaded(todoList)
     }
     
     func updateTask(_ updatedTask: Todo, section: Int, itemIndex: Int) {
         guard let index = todoList[section].firstIndex(where: { $0.id == updatedTask.id }) else {
-            state.value = .error("Not found task to update")
+            errorMessage = "Not found task to update"
             return
         }
 
         todoList[section][index] = updatedTask
-        state.value = .loaded(todoList)
         }
     
     func removeTask(_ deletedTask: Todo, section: Int, index: Int) {
@@ -76,12 +65,10 @@ class TodoListViewModel {
 //        }
         
         guard let index = todoList[section].firstIndex(where: { $0.id == deletedTask.id }) else {
-            state.value = .error("Not found task to delete")
+            errorMessage = "Not found task to delete"
             return
         }
         
-        todoList[section].remove(at: index)
-        state.value = .loaded(todoList)
-    }
+        todoList[section].remove(at: index)    }
    
 }
