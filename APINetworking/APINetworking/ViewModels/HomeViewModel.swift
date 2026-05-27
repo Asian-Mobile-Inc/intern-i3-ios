@@ -11,25 +11,13 @@ class HomeViewModel {
     var todos : [Todo] = []
     private let service = TodoService()
     var onOutput : ((Result<String, Error>) -> Void)?
-    func fetchData() {
-        service.fetchTodos { [weak self] result in
-            switch result {
-                
-            case .success(let datas):
-                self?.todos = datas
-                self?.onOutput?(.success("Fetch data successful"))
-//                DispatchQueue.main.async {
-//                    self?.todos = datas
-//                    self?.reloadUI()
-//                }
-            
-            case .failure(let error):
-                self?.onOutput?(.failure(error))
-//                DispatchQueue.main.async {
-//                    self?.showError(message: error.localizedDescription)
-//                }
-            }
-            
+    func fetchData() async {
+        do {
+            let todos = try await service.request(urlString: "https://jsonplaceholder.typicode.com/todos", reponseType: [Todo].self)
+            self.todos = todos
+            onOutput?(.success("Loading data completed"))
+        } catch {
+            onOutput?(.failure(error))
         }
     }
     

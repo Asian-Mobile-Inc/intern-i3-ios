@@ -10,7 +10,9 @@ final class ViewController: UIViewController {
         title = "Todo List"
         setupTableView()
         bindViewModel()
-        fetchData()
+        Task {
+           await viewModel.fetchData()
+        }
     }
 
     private func setupTableView() {
@@ -46,9 +48,6 @@ final class ViewController: UIViewController {
         }
     }
     
-    func fetchData() {
-        viewModel.fetchData()
-    }
 }
 
 extension ViewController: UITableViewDataSource {

@@ -7,37 +7,51 @@
 
 import Foundation
 
+enum NetworkError: Error {
+    case invalidURL
+    case invalidResponse
+    case badStatusCode(Int)
+    case decodingFailed
+    case noData
+}
+extension NetworkError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .invalidURL:
+            return "URL không hợp lệ"
+        case .invalidResponse:
+            return "Response không hợp lệ"
+        case .badStatusCode(let code):
+            return "Server trả về mã lỗi \(code)"
+        case .decodingFailed:
+            return "Không thể đọc dữ liệu từ server"
+        case .noData:
+            return "Không có dữ liệu"
+        }
+    }
+}
+
 class TodoService {
-    func fetchTodos ( completion: @escaping (Result<[Todo], Error>) -> Void) {
-        let urlString = "https://jsonplaceholder.typicode.com/todos"
+    func request<T: Decodable> ( urlString: String, reponseType: T.Type) async throws -> T {
         
         guard let url = URL(string: urlString) else {
-            return
+            throw NetworkError.invalidURL
         }
         
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            guard let data = data else {
-                let error  = NSError(
-                    domain: "NoData",
-                    code: -1,
-                    userInfo: [NSLocalizedDescriptionKey: "Data is empty"] )
-                completion(.failure(error))
-                return
-            }
-            
-            do {
-                let todos = try JSONDecoder().decode([Todo].self, from: data)
-                completion(.success(todos))
-            } catch {
-                completion(.failure(error))
-            }
-            
-        }.resume()
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw NetworkError.invalidResponse
+        }
+        
+        guard 200...299 ~= httpResponse.statusCode else {
+            throw NetworkError.badStatusCode(httpResponse.statusCode)
+        }
+        
+        do {
+            return try JSONDecoder().decode(T.self, from: data)
+        } catch {
+            throw NetworkError.decodingFailed
+        }
     }
 }
