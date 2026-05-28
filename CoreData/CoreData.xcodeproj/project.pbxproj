@@ -6,146 +6,119 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		1482B66823C9BA57AEA7C345 /* Pods_APINetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3BA28D14E1F96AFF80C3717 /* Pods_APINetworking.framework */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
-		0492D3202FC407CC00A82C10 /* APINetworking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = APINetworking.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		4307C0F46173CF39647FC79C /* Pods-APINetworking.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-APINetworking.release.xcconfig"; path = "Target Support Files/Pods-APINetworking/Pods-APINetworking.release.xcconfig"; sourceTree = "<group>"; };
-		A3BA28D14E1F96AFF80C3717 /* Pods_APINetworking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_APINetworking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D4E754619B77BC629026CAB4 /* Pods-APINetworking.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-APINetworking.debug.xcconfig"; path = "Target Support Files/Pods-APINetworking/Pods-APINetworking.debug.xcconfig"; sourceTree = "<group>"; };
+		043DCE6E2FC7ED5300BAA9AC /* CoreData.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoreData.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		0492D3322FC407CF00A82C10 /* Exceptions for "APINetworking" folder in "APINetworking" target */ = {
+		043DCE832FC7ED5600BAA9AC /* Exceptions for "CoreData" folder in "CoreData" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 0492D31F2FC407CC00A82C10 /* APINetworking */;
+			target = 043DCE6D2FC7ED5300BAA9AC /* CoreData */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		0492D3222FC407CC00A82C10 /* APINetworking */ = {
+		043DCE702FC7ED5300BAA9AC /* CoreData */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				0492D3322FC407CF00A82C10 /* Exceptions for "APINetworking" folder in "APINetworking" target */,
+				043DCE832FC7ED5600BAA9AC /* Exceptions for "CoreData" folder in "CoreData" target */,
 			);
-			path = APINetworking;
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		0492D31D2FC407CC00A82C10 /* Frameworks */ = {
+		043DCE6B2FC7ED5300BAA9AC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1482B66823C9BA57AEA7C345 /* Pods_APINetworking.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0492D3172FC407CC00A82C10 = {
+		043DCE652FC7ED5200BAA9AC = {
 			isa = PBXGroup;
 			children = (
-				0492D3222FC407CC00A82C10 /* APINetworking */,
-				0492D3212FC407CC00A82C10 /* Products */,
-				0ED64BCCF603753498CFABD2 /* Pods */,
-				F5780B54ECADF85AC2BA5FE4 /* Frameworks */,
+				043DCE702FC7ED5300BAA9AC /* CoreData */,
+				043DCE6F2FC7ED5300BAA9AC /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		0492D3212FC407CC00A82C10 /* Products */ = {
+		043DCE6F2FC7ED5300BAA9AC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0492D3202FC407CC00A82C10 /* APINetworking.app */,
+				043DCE6E2FC7ED5300BAA9AC /* CoreData.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		0ED64BCCF603753498CFABD2 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				D4E754619B77BC629026CAB4 /* Pods-APINetworking.debug.xcconfig */,
-				4307C0F46173CF39647FC79C /* Pods-APINetworking.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
-		F5780B54ECADF85AC2BA5FE4 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				A3BA28D14E1F96AFF80C3717 /* Pods_APINetworking.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		0492D31F2FC407CC00A82C10 /* APINetworking */ = {
+		043DCE6D2FC7ED5300BAA9AC /* CoreData */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0492D3332FC407CF00A82C10 /* Build configuration list for PBXNativeTarget "APINetworking" */;
+			buildConfigurationList = 043DCE842FC7ED5600BAA9AC /* Build configuration list for PBXNativeTarget "CoreData" */;
 			buildPhases = (
-				714F6ABCA0176FB90F7FFB6F /* [CP] Check Pods Manifest.lock */,
-				0492D31C2FC407CC00A82C10 /* Sources */,
-				0492D31D2FC407CC00A82C10 /* Frameworks */,
-				0492D31E2FC407CC00A82C10 /* Resources */,
-				93DF2B5566B7B836F70BA7F6 /* [CP] Embed Pods Frameworks */,
+				043DCE6A2FC7ED5300BAA9AC /* Sources */,
+				043DCE6B2FC7ED5300BAA9AC /* Frameworks */,
+				043DCE6C2FC7ED5300BAA9AC /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				0492D3222FC407CC00A82C10 /* APINetworking */,
+				043DCE702FC7ED5300BAA9AC /* CoreData */,
 			);
-			name = APINetworking;
-			productName = APINetworking;
-			productReference = 0492D3202FC407CC00A82C10 /* APINetworking.app */;
+			name = CoreData;
+			packageProductDependencies = (
+			);
+			productName = CoreData;
+			productReference = 043DCE6E2FC7ED5300BAA9AC /* CoreData.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		0492D3182FC407CC00A82C10 /* Project object */ = {
+		043DCE662FC7ED5200BAA9AC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2640;
 				LastUpgradeCheck = 2640;
 				TargetAttributes = {
-					0492D31F2FC407CC00A82C10 = {
+					043DCE6D2FC7ED5300BAA9AC = {
 						CreatedOnToolsVersion = 26.4;
 					};
 				};
 			};
-			buildConfigurationList = 0492D31B2FC407CC00A82C10 /* Build configuration list for PBXProject "APINetworking" */;
+			buildConfigurationList = 043DCE692FC7ED5200BAA9AC /* Build configuration list for PBXProject "CoreData" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = 0492D3172FC407CC00A82C10;
+			mainGroup = 043DCE652FC7ED5200BAA9AC;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 0492D3212FC407CC00A82C10 /* Products */;
+			productRefGroup = 043DCE6F2FC7ED5300BAA9AC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				0492D31F2FC407CC00A82C10 /* APINetworking */,
+				043DCE6D2FC7ED5300BAA9AC /* CoreData */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		0492D31E2FC407CC00A82C10 /* Resources */ = {
+		043DCE6C2FC7ED5300BAA9AC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -154,54 +127,8 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		714F6ABCA0176FB90F7FFB6F /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-APINetworking-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		93DF2B5566B7B836F70BA7F6 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-APINetworking/Pods-APINetworking-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-APINetworking/Pods-APINetworking-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-APINetworking/Pods-APINetworking-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
-		0492D31C2FC407CC00A82C10 /* Sources */ = {
+		043DCE6A2FC7ED5300BAA9AC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -211,9 +138,8 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		0492D3342FC407CF00A82C10 /* Debug */ = {
+		043DCE852FC7ED5600BAA9AC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D4E754619B77BC629026CAB4 /* Pods-APINetworking.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -221,18 +147,19 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8ZV322RN42;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = APINetworking/Info.plist;
+				INFOPLIST_FILE = CoreData/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.utproducts.APINetworking;
+				PRODUCT_BUNDLE_IDENTIFIER = com.utproducts.CoreData;
+				PRODUCT_MODULE_NAME = CoreDataApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -244,9 +171,8 @@
 			};
 			name = Debug;
 		};
-		0492D3352FC407CF00A82C10 /* Release */ = {
+		043DCE862FC7ED5600BAA9AC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4307C0F46173CF39647FC79C /* Pods-APINetworking.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -254,18 +180,19 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8ZV322RN42;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = APINetworking/Info.plist;
+				INFOPLIST_FILE = CoreData/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.utproducts.APINetworking;
+				PRODUCT_BUNDLE_IDENTIFIER = com.utproducts.CoreData;
+				PRODUCT_MODULE_NAME = CoreDataApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -277,7 +204,7 @@
 			};
 			name = Release;
 		};
-		0492D3362FC407CF00A82C10 /* Debug */ = {
+		043DCE872FC7ED5600BAA9AC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -341,7 +268,7 @@
 			};
 			name = Debug;
 		};
-		0492D3372FC407CF00A82C10 /* Release */ = {
+		043DCE882FC7ED5600BAA9AC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -401,25 +328,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0492D31B2FC407CC00A82C10 /* Build configuration list for PBXProject "APINetworking" */ = {
+		043DCE692FC7ED5200BAA9AC /* Build configuration list for PBXProject "CoreData" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				0492D3362FC407CF00A82C10 /* Debug */,
-				0492D3372FC407CF00A82C10 /* Release */,
+				043DCE872FC7ED5600BAA9AC /* Debug */,
+				043DCE882FC7ED5600BAA9AC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		0492D3332FC407CF00A82C10 /* Build configuration list for PBXNativeTarget "APINetworking" */ = {
+		043DCE842FC7ED5600BAA9AC /* Build configuration list for PBXNativeTarget "CoreData" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				0492D3342FC407CF00A82C10 /* Debug */,
-				0492D3352FC407CF00A82C10 /* Release */,
+				043DCE852FC7ED5600BAA9AC /* Debug */,
+				043DCE862FC7ED5600BAA9AC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 0492D3182FC407CC00A82C10 /* Project object */;
+	rootObject = 043DCE662FC7ED5200BAA9AC /* Project object */;
 }
