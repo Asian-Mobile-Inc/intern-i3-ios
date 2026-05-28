@@ -132,145 +132,110 @@ class ViewController: UIViewController {
         filterButton.setTitle("Filter: \(filterType.title)", for: .normal)
     }
     
-    // MARK: SETUI SORT & PREDIACTE
+    // MARK: SETUP SORT & PREDIACTE
     private func fetchTodos() {
-        let request: NSFetchRequest<TodoEntity> = TodoEntity.fetchRequest()
+        let request : NSFetchRequest<TodoEntity> = TodoEntity.fetchRequest()
         switch filterType {
-       case .all:
-           request.predicate = nil
-
-       case .active:
-           request.predicate = NSPredicate(format: "isDone == %@", NSNumber(value: false))
-
-       case .completed:
-           request.predicate = NSPredicate(format: "isDone == %@", NSNumber(value: true))
-       }
-
+        case .all:
+            request.predicate = nil
+        case .active:
+            request.predicate = NSPredicate(format: "isDone == %@", NSNumber(value: false))
+        case .completed:
+            request.predicate = NSPredicate(format: "isDone == %@", NSNumber(value: true))
+        }
+        
         switch sortType {
         case .newest:
-            request.sortDescriptors = [
-                NSSortDescriptor(key: "createdAt", ascending: false)
-            ]
-
+            request.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: false)]
         case .oldest:
-            request.sortDescriptors = [
-                NSSortDescriptor(key: "createdAt", ascending: true)
-            ]
-
+            request.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
         case .titleAZ:
-            request.sortDescriptors = [
-                NSSortDescriptor(key: "title", ascending: true)
-            ]
-
+            request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
         case .titleZA:
-            request.sortDescriptors = [
-                NSSortDescriptor(key: "title", ascending: false)
-            ]
+            request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: false)]
         }
-
+        
         do {
             todos = try context.fetch(request)
             tableView.reloadData()
         } catch {
-            print("Fetch failed:", error)
+            print("Fetch Failed", error)
         }
     }
-    //MARK ADD BUTTON
+    //MARK: ADD BUTTON
     @objc private func addButtonTapped() {
-        let alert = UIAlertController(
-            title: "Thêm Todo",
-            message: nil,
-            preferredStyle: .alert
-        )
-
+        let alert = UIAlertController(title: "Add", message: "Enter task", preferredStyle: .alert)
         alert.addTextField { textField in
-            textField.placeholder = "Nhập công việc"
+            textField.placeholder = "Enter title"
         }
-
-        let addAction = UIAlertAction(title: "Thêm", style: .default) { [weak self] _ in
+        
+        let action = UIAlertAction(title: "Add", style: .default) { [weak self] _ in
             guard let self = self else { return }
-
+            
             let title = alert.textFields?.first?.text ?? ""
-
+            
             if title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 return
             }
-
             self.createTodo(title: title)
         }
-
-        let cancelAction = UIAlertAction(title: "Hủy", style: .cancel)
-
-        alert.addAction(addAction)
-        alert.addAction(cancelAction)
-
-        present(alert, animated: true)
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+        
+        alert.addAction(action)
+        alert.addAction(cancel)
+        
+        present( alert, animated:  true)
     }
 
     //MARK: SORT BUTTON
     @objc private func sortButtonTapped() {
-        let alert = UIAlertController(
-            title: "Chọn kiểu sắp xếp",
-            message: nil,
-            preferredStyle: .actionSheet
-        )
-
-        let options: [TodoSortType] = [.newest, .oldest, .titleAZ, .titleZA]
-
+        let alert = UIAlertController(title: "Sort", message: "Choose sort type", preferredStyle: .actionSheet)
+        
+        let options : [TodoSortType] = [.newest, .oldest, .titleAZ, .titleZA]
+        
         for option in options {
             let isCurrent = option == sortType
             let actionTitle = isCurrent ? "✓ \(option.title)" : option.title
-            let action = UIAlertAction(title: actionTitle, style: .default) { [weak self] _ in
-                guard let self = self else { return }
+            let alertAction = UIAlertAction(title: actionTitle, style: .default) { [weak self] _ in
+                guard let self = self else {return}
                 self.sortType = option
                 self.updateControlButtonTitles()
                 self.fetchTodos()
             }
-            alert.addAction(action)
+            alert.addAction(alertAction)
         }
-
-        alert.addAction(UIAlertAction(title: "Hủy", style: .cancel))
-
         present(alert, animated: true)
     }
     //MARK: FILTER BUTTON
     @objc private func filterButtonTapped() {
-        let alert = UIAlertController(
-            title: "Chọn bộ lọc",
-            message: nil,
-            preferredStyle: .actionSheet
-        )
-
-        let options: [TodoFilterType] = [.all, .active, .completed]
-
+        let alert = UIAlertController(title: "Filter", message: "Choose filter type", preferredStyle: .actionSheet)
+        
+        let options : [TodoFilterType] = [.all, .active, .completed]
+        
         for option in options {
             let isCurrent = option == filterType
             let actionTitle = isCurrent ? "✓ \(option.title)" : option.title
-            let action = UIAlertAction(title: actionTitle, style: .default) { [weak self] _ in
-                guard let self = self else { return }
+            let alertAction = UIAlertAction(title: actionTitle, style: .default) { [weak self] _ in
+                guard let self = self else {return}
                 self.filterType = option
                 self.updateControlButtonTitles()
                 self.fetchTodos()
             }
-            alert.addAction(action)
+            alert.addAction(alertAction)
         }
-
-        alert.addAction(UIAlertAction(title: "Hủy", style: .cancel))
-
+        
         present(alert, animated: true)
     }
     
     //MARK: POPUP UI
     private func createTodo(title: String) {
         let todo = TodoEntity(context: context)
-
+        
         todo.id = UUID()
         todo.title = title
         todo.isDone = false
         todo.createdAt = Date()
-
-        saveContext()
-        fetchTodos()
     }
     
     private func saveContext() {
@@ -279,7 +244,7 @@ class ViewController: UIViewController {
                 try context.save()
             }
         } catch {
-            print("Save failed:", error)
+            print("Save context failed", error)
         }
     }
     
@@ -287,6 +252,24 @@ class ViewController: UIViewController {
     private func showEditAlert(at indexPath: IndexPath) {
         let todo = todos[indexPath.row]
         let alert = UIAlertController(title: "Update", message: "", preferredStyle: .actionSheet)
+        
+        alert.addTextField { textField in
+            textField.text = todo.title
+            
+        }
+        
+        let editAction = UIAlertAction(title: "Save", style: .default) { [weak self] _ in
+            guard let self = self else {return}
+            let title = alert.textFields?.first?.text ?? ""
+            if title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                return
+            }
+            todo.title = title
+            self.saveContext()
+            self.fetchTodos()
+        }
+        alert.addAction(editAction)
+        present(alert, animated: true)
     }
     
     private func deleteTodo(at indexPath: IndexPath) {
