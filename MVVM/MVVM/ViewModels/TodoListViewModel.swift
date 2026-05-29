@@ -7,14 +7,17 @@
 
 import Foundation
 import Combine
+import CoreData
 
 class TodoListViewModel {
     @Published private(set) var todoList: [[Todo]] = []
     @Published private(set) var errorMessage : String? = nil
+    let repository = TodoRepository()
     
     var numberOfSections : Int {
         todoList.count
     }
+    
     func numberOfIemsInSection(at section: Int) -> Int {
         todoList[section].count
     }
@@ -24,27 +27,21 @@ class TodoListViewModel {
     }
     
     func loadTasks() {
-            DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
-                let result = Todo.getTodoList()
-
-                DispatchQueue.main.async {
-                    self.todoList = result
-
-                    if result.isEmpty {
-                        self.errorMessage = "Data is empty"
-                    } else {
-                        self.todoList = result
-                    }
-                }
-            }
+        let result = repository.fetchTodo()
+        
+        if result.isEmpty {
+            self.errorMessage = "Data is empty"
+        } else {
+            self.todoList = result
         }
+    }
     
     public func addTask(section: Int, name: String, isDone: Bool = false ) {
         guard !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             errorMessage = "Title must not empty!!"
             return
         }
-        
+        repository.addTask(title: name, section: section)
         let newTask = Todo(name: name, isDone: isDone)
         todoList[section].append(newTask)
     }
@@ -71,4 +68,35 @@ class TodoListViewModel {
         
         todoList[section].remove(at: index)    }
    
+}
+
+enum TodoSortType {
+    case titleAZ
+    case titleZA
+
+    var title: String {
+        switch self {
+        case .titleAZ:
+            return "A-Z"
+        case .titleZA:
+            return "Z-A"
+        }
+    }
+}
+
+enum TodoFilterType {
+    case all
+    case active
+    case completed
+
+    var title: String {
+        switch self {
+        case .all:
+            return "Tất cả"
+        case .active:
+            return "Chưa xong"
+        case .completed:
+            return "Đã xong"
+        }
+    }
 }

@@ -236,6 +236,8 @@ class ViewController: UIViewController {
         todo.title = title
         todo.isDone = false
         todo.createdAt = Date()
+        saveContext()
+        fetchTodos()
     }
     
     private func saveContext() {
