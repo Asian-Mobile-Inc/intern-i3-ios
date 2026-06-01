@@ -9,11 +9,38 @@ import UIKit
 
 final class MainTabBarController: UITabBarController {
 
+    let btnMiddle : UIButton = {
+      let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
+       btn.setTitle("", for: .normal)
+       btn.backgroundColor = UIColor.red
+       btn.layer.cornerRadius = 30
+       btn.layer.shadowColor = UIColor.black.cgColor
+       btn.layer.shadowOpacity = 0.25
+       btn.layer.shadowOffset = CGSize(width: 0, height: 4)
+       btn.layer.shadowRadius = 6
+       let config = UIImage.SymbolConfiguration(pointSize: 26, weight: .semibold)
+       let icon = UIImage(systemName: "plus", withConfiguration: config)
+       btn.setImage(icon, for: .normal)
+       btn.tintColor = .white
+       return btn
+   }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        setValue(CustomTabBar(), forKey: "tabBar")
         setupViewControllers()
         setupUITabBar()
+        self.tabBar.addSubview(btnMiddle)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        btnMiddle.frame = CGRect(
+            x: (tabBar.bounds.width - 60) / 2,
+            y: -25,
+            width: 60,
+            height: 60
+        )
     }
     
     private func setupViewControllers() {
@@ -40,10 +67,13 @@ final class MainTabBarController: UITabBarController {
             title: "Stats",
             image: "chart.bar",
             selectedImage: "chart.bar.fill")
+        let emptyNav = creatNavigationController(
+            rootViewController: UIViewController(), title: "", image: "", selectedImage: "")
         
         viewControllers = [
             exploreNav,
             searchNav,
+            emptyNav,
             libraryNav,
             statsNav
         ]
@@ -65,7 +95,7 @@ final class MainTabBarController: UITabBarController {
     }
     
     func setupUITabBar() {
-        tabBar.tintColor = .systemBlue
+        tabBar.tintColor = .red
         tabBar.unselectedItemTintColor = .systemGray
         tabBar.backgroundColor = .systemBackground
         
@@ -79,7 +109,6 @@ final class MainTabBarController: UITabBarController {
             tabBar.scrollEdgeAppearance = appearance
         }
     }
-    
     /*
     // MARK: - Navigation
 
