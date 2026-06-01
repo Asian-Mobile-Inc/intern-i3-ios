@@ -13,6 +13,7 @@ class DetailViewModel {
     @Published private(set) var task : Todo
     private(set) var didDeleteTask = PassthroughSubject<Todo, Never>()
     private(set) var showError = PassthroughSubject<String, Never>()
+    let repository = TodoRepository()
     
     init(task: Todo) {
         self.task = task
@@ -28,9 +29,11 @@ class DetailViewModel {
         }
 
         task.name = newTitle
+        repository.updateTask(task)
     }
     
     func deleteTask () {
         didDeleteTask.send(task)
+        repository.deleteTask(task)
     }
 }

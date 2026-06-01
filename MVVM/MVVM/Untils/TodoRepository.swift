@@ -114,6 +114,24 @@ class TodoRepository {
             print("Update todo failed:", error)
         }
     }
+    
+    func deleteTask(_ todo: Todo) {
+        let request : NSFetchRequest<TodoEntity> = TodoEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", todo.id as CVarArg)
+
+        do {
+           let entities = try context.fetch(request)
+
+           if let entity = entities.first {
+               context.delete(entity)
+               save()
+           } else {
+               print("Can not find task to delete")
+           }
+       } catch {
+           print("Delete todo failed:", error)
+       }
+    }
     private func save() {
         do {
             if context.hasChanges {
