@@ -31,11 +31,11 @@ final class ExploreViewModel {
     @Published private(set) var isLoading: Bool = false
     @Published private(set) var errorMessage: String?
     
-    private let apiService : APIService
-    var onOutput : ((Result<String,Error>) -> Void)?
-    
-    init( apiService : APIService = APIService()) {
-        self.apiService = apiService
+    private let repository: BookRepositoryProtocol
+    private var cancellables = Set<AnyCancellable>()
+
+    init(repository: BookRepositoryProtocol = Repository()) {
+    self.repository = repository
     }
     
     func loadMockData() {
@@ -47,25 +47,36 @@ final class ExploreViewModel {
             .recommended: books
         ]
     }
-    func fetchData() async {
+    func fetchData() {
         isLoading = true
         errorMessage = nil
         
-        do {
-            let response = try await apiService.request(.searchBooks(query: "programming"), responseType: BookSearchResponse.self)
-            
-            let books = response.docs.compactMap { $0.toBook() }
-            
-            sections = [
-                .featured: Array(books.prefix(3)),
-                .popular: Array(books.dropFirst(3).prefix(8)),
-                .recommended: Array(books.dropFirst(11).prefix(8))
-            ]
-            isLoading = false
-        } catch {
-            isLoading = false
-            errorMessage = error.localizedDescription
-        }
+        repository.searchBooks(query: "ios development")
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
+                guard let self else { return }
+                
+                self.isLoading = false
+                
+                switch completion {
+                case .finished:
+                    break
+                    
+                case .failure(let error):
+                    self.errorMessage = error.localizedDescription
+                }
+                
+            } receiveValue: { [weak self] books in
+                guard let self else { return }
+                
+                self.sections = [
+                    .featured: Array(books.prefix(3)),
+                    .popular: Array(books.dropFirst(3).prefix(8)),
+                    .recommended: Array(books.dropFirst(11).prefix(8))
+                ]
+            }
+            .store(in: &cancellables)
+ 
         
     }
 }

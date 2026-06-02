@@ -36,9 +36,7 @@ class ExploreViewController: UIViewController {
         setupDataSource()
         bindViewModel()
         
-        Task {
-            await viewModel.fetchData()
-        }
+        viewModel.fetchData()
     }
 
     private func setupCollectionView() {

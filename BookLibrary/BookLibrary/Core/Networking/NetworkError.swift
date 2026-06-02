@@ -13,6 +13,7 @@ enum NetworkError: Error {
     case badStatusCode(Int)
     case decodingFailed
     case noData
+    case unknown(Error)
 }
 extension NetworkError: LocalizedError {
     var errorDescription: String? {
@@ -27,7 +28,8 @@ extension NetworkError: LocalizedError {
             return "Decoding Failed"
         case .noData:
             return "Data is empty"
-            
+        case .unknown(let error):
+            return error.localizedDescription
         }
     }
 }
