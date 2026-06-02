@@ -35,7 +35,10 @@ class ExploreViewController: UIViewController {
         setupCollectionView()
         setupDataSource()
         bindViewModel()
-        viewModel.loadMockData()
+        
+        Task {
+            await viewModel.fetchData()
+        }
     }
 
     private func setupCollectionView() {
@@ -74,21 +77,21 @@ class ExploreViewController: UIViewController {
     private func getLayout(index : Int) ->NSCollectionLayoutSection {
        switch index {
        case 0: return createSection(
-        itemWidth: .fractionalWidth(1/2.0),
+        itemWidth: .fractionalWidth(1.0),
                itemHeight: .fractionalHeight(1.0),
                groupWidth: .fractionalWidth(1.0),
-               groupHeight: .absolute(160),
+               groupHeight: .absolute(200),
                interItemSpacing: 10,
                interGroupSpacing: 10,
-               scrollBehaviour: .continuous,
+                scrollBehaviour: .groupPagingCentered,
                headerHeight: .absolute(44)
            )
            
        case 1: return createSection(
-        itemWidth: .fractionalWidth(1/2.0),
+        itemWidth: .fractionalWidth(1.0),
                itemHeight: .fractionalHeight(1.0),
-               groupWidth: .fractionalWidth(1.0),
-               groupHeight: .absolute(160),
+               groupWidth: .fractionalWidth(2/3.0),
+               groupHeight: .absolute(200),
                interItemSpacing: 10,
                interGroupSpacing: 10,
                scrollBehaviour: .continuous,
@@ -97,10 +100,11 @@ class ExploreViewController: UIViewController {
            
        default:
            return createSection(
-               itemWidth: .fractionalWidth(1.0 / 2.0),
+               itemWidth: .fractionalWidth(1/2.0),
                itemHeight: .fractionalHeight(1.0),
                groupWidth: .fractionalWidth(1.0),
-               groupHeight: .absolute(160),
+               groupHeight: .absolute(200),
+               itemsPerGroup: 2,
                interItemSpacing: 10,
                interGroupSpacing: 10,
                headerHeight: .absolute(44)
@@ -112,6 +116,7 @@ class ExploreViewController: UIViewController {
         itemHeight: NSCollectionLayoutDimension,
         groupWidth: NSCollectionLayoutDimension,
         groupHeight: NSCollectionLayoutDimension,
+        itemsPerGroup: Int = 1,
         interItemSpacing : Double = 0 ,
         interGroupSpacing : Double = 0 ,
         scrollBehaviour: UICollectionLayoutSectionOrthogonalScrollingBehavior = .none,
@@ -122,7 +127,7 @@ class ExploreViewController: UIViewController {
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
         let groupSize = NSCollectionLayoutSize(widthDimension: groupWidth, heightDimension: groupHeight)
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: itemsPerGroup)
 
         group.interItemSpacing = .fixed(interItemSpacing)
 
