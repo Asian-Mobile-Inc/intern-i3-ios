@@ -6,25 +6,189 @@
 //
 
 import UIKit
+import Combine
 
 class ExploreViewController: UIViewController {
+    @IBOutlet weak var collectionView: UICollectionView!
+    private struct ExploreItem: Hashable {
+        let section: ExploreSection
+        let book: Book
 
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(section)
+            hasher.combine(book.id)
+        }
+
+        static func == (lhs: ExploreItem, rhs: ExploreItem) -> Bool {
+            lhs.section == rhs.section && lhs.book.id == rhs.book.id
+        }
+    }
+
+    private var dataSource: UICollectionViewDiffableDataSource<ExploreSection, ExploreItem>!
+    private let viewModel = ExploreViewModel()
+    private var cancellables = Set<AnyCancellable>()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         title = "Explore"
-        // Do any additional setup after loading the view.
+        setupCollectionView()
+        setupDataSource()
+        bindViewModel()
+        viewModel.loadMockData()
     }
 
+    private func setupCollectionView() {
+        collectionView.backgroundColor = .systemBackground
+        collectionView.collectionViewLayout = createLayout()
+        
+        collectionView.register(
+           UINib(nibName: "BookExploreViewCell", bundle: nil),
+           forCellWithReuseIdentifier: "bookExploreViewCell"
+        )
 
-    /*
-    // MARK: - Navigation
+        collectionView.register(
+           SectionHeaderView.self,
+           forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+           withReuseIdentifier: SectionHeaderView.reuseIdentifier
+        )
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
     }
-    */
+
+    private func bindViewModel() {
+        viewModel.$sections
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] sections in
+                self?.applySnapshot(sections)
+            }
+            .store(in: &cancellables)
+    }
+    
+    //MARK: COMPOSITIONAL LAYOUT
+    private func createLayout() -> UICollectionViewCompositionalLayout {
+        let layout = UICollectionViewCompositionalLayout {[weak self] index , env in
+            return self?.getLayout(index : index)
+        }
+        return layout
+    }
+    private func getLayout(index : Int) ->NSCollectionLayoutSection {
+       switch index {
+       case 0: return createSection(
+        itemWidth: .fractionalWidth(1/2.0),
+               itemHeight: .fractionalHeight(1.0),
+               groupWidth: .fractionalWidth(1.0),
+               groupHeight: .absolute(160),
+               interItemSpacing: 10,
+               interGroupSpacing: 10,
+               scrollBehaviour: .continuous,
+               headerHeight: .absolute(44)
+           )
+           
+       case 1: return createSection(
+        itemWidth: .fractionalWidth(1/2.0),
+               itemHeight: .fractionalHeight(1.0),
+               groupWidth: .fractionalWidth(1.0),
+               groupHeight: .absolute(160),
+               interItemSpacing: 10,
+               interGroupSpacing: 10,
+               scrollBehaviour: .continuous,
+               headerHeight: .absolute(44)
+           )
+           
+       default:
+           return createSection(
+               itemWidth: .fractionalWidth(1.0 / 2.0),
+               itemHeight: .fractionalHeight(1.0),
+               groupWidth: .fractionalWidth(1.0),
+               groupHeight: .absolute(160),
+               interItemSpacing: 10,
+               interGroupSpacing: 10,
+               headerHeight: .absolute(44)
+           )
+       }
+   }
+    private func createSection(
+        itemWidth: NSCollectionLayoutDimension,
+        itemHeight: NSCollectionLayoutDimension,
+        groupWidth: NSCollectionLayoutDimension,
+        groupHeight: NSCollectionLayoutDimension,
+        interItemSpacing : Double = 0 ,
+        interGroupSpacing : Double = 0 ,
+        scrollBehaviour: UICollectionLayoutSectionOrthogonalScrollingBehavior = .none,
+        sectionInset: NSDirectionalEdgeInsets = .init(top: 10, leading: 10, bottom: 10, trailing: 10),
+        headerHeight: NSCollectionLayoutDimension? = nil
+    ) ->NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: itemWidth, heightDimension: itemHeight)
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        let groupSize = NSCollectionLayoutSize(widthDimension: groupWidth, heightDimension: groupHeight)
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+
+        group.interItemSpacing = .fixed(interItemSpacing)
+
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = interGroupSpacing
+        section.contentInsets = sectionInset
+        section.orthogonalScrollingBehavior = scrollBehaviour
+
+        if let headerHeight = headerHeight {
+           let headerSize = NSCollectionLayoutSize(
+               widthDimension: .fractionalWidth(1.0),
+               heightDimension: headerHeight
+           )
+           let header = NSCollectionLayoutBoundarySupplementaryItem(
+               layoutSize: headerSize,
+               elementKind: UICollectionView.elementKindSectionHeader,
+               alignment: .top
+           )
+           section.boundarySupplementaryItems = [header]
+        }
+
+        return section
+        
+    }
+   
+    //MARK: DIFFABLE DATASOURCE
+    private func setupDataSource() {
+            dataSource = UICollectionViewDiffableDataSource<ExploreSection, ExploreItem>(collectionView: collectionView) { collectionView, indexPath, item in
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "bookExploreViewCell", for: indexPath) as! BookExploreViewCell
+                cell.configure(with: item.book)
+                return cell
+            }
+            
+            dataSource.supplementaryViewProvider = { [weak self] collectionView, kind, indexPath in
+                guard kind == UICollectionView.elementKindSectionHeader else { return nil }
+                
+                let headerView = collectionView.dequeueReusableSupplementaryView(
+                    ofKind: kind,
+                    withReuseIdentifier: SectionHeaderView.reuseIdentifier,
+                    for: indexPath
+                ) as! SectionHeaderView
+                
+                if let self = self {
+                    let section = self.dataSource.snapshot().sectionIdentifiers[indexPath.section]
+                    headerView.configure(with: section.title)
+                }
+                
+                return headerView
+            }
+        
+    }
+
+    func applySnapshot(_ sections: [ExploreSection: [Book]]) {
+        var snapshot = NSDiffableDataSourceSnapshot<ExploreSection, ExploreItem>()
+        
+        for section in ExploreSection.allCases {
+            guard let books = sections[section], !books.isEmpty else {
+                continue
+            }
+            
+            let items = books.map { ExploreItem(section: section, book: $0) }
+            snapshot.appendSections([section])
+            snapshot.appendItems(items, toSection: section)
+        }
+        
+        dataSource.apply(snapshot, animatingDifferences: true)
+    }
 
 }
