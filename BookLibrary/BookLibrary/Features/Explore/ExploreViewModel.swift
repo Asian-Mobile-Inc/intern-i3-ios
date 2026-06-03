@@ -51,7 +51,7 @@ final class ExploreViewModel {
         isLoading = true
         errorMessage = nil
         
-        repository.searchBooks(query: "ios development")
+        repository.searchBooks(query: "lifestyle")
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 guard let self else { return }

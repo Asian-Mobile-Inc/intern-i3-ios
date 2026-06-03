@@ -14,6 +14,13 @@ class Book : Hashable {
     let firstPublishYear: Int?
     let coverID: Int?
     
+    var coverURL: URL? {
+       guard let coverID else {
+           return nil
+       }
+       
+       return URL(string: "https://covers.openlibrary.org/b/id/\(coverID)-M.jpg")
+   }
     func hash(into hasher: inout Hasher) {
              hasher.combine(id)
     }
