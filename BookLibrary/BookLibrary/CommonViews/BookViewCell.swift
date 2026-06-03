@@ -18,4 +18,16 @@ class BookViewCell: UICollectionViewCell {
         // Initialization code
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        author.text = nil
+        title.text = nil
+        publicYear.text = nil
+    }
+    
+    func configure(with item: Book) {
+        author.text = item.author
+        title.text = item.title
+        publicYear.text = "\(item.firstPublishYear, default: "")"
+    }
 }
