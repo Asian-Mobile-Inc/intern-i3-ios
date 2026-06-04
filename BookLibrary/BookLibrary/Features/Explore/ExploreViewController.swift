@@ -42,7 +42,7 @@ class ExploreViewController: UIViewController {
     private func setupCollectionView() {
         collectionView.backgroundColor = .systemBackground
         collectionView.collectionViewLayout = createLayout()
-        
+        collectionView.delegate = self
         collectionView.register(
            UINib(nibName: "BookExploreViewCell", bundle: nil),
            forCellWithReuseIdentifier: "bookExploreViewCell"
@@ -194,4 +194,17 @@ class ExploreViewController: UIViewController {
         dataSource.apply(snapshot, animatingDifferences: true)
     }
 
+}
+
+//MARK: DELEGATE
+
+extension ExploreViewController : UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let book = dataSource.itemIdentifier(for: indexPath) else {return}
+        
+        let detailVM = BookDetailViewModel(book: book.book)
+        let detailVC = BookDetailViewController(viewModel: detailVM)
+        
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
 }

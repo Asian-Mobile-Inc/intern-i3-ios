@@ -31,7 +31,7 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        title = "Search Books"
+        title = "Search"
         setupCollectionView()
         setupLoadingIndicator()
         setupEmptyLabel()
@@ -42,7 +42,7 @@ class SearchViewController: UIViewController {
     
     private func setupCollectionView() {
         collectionView.backgroundColor = .systemBackground
-//        collectionView.delegate = self
+        collectionView.delegate = self
         collectionView.collectionViewLayout = makeLayout()
         collectionView.register(
             UINib(nibName: "BookViewCell", bundle: nil),
@@ -204,5 +204,19 @@ class SearchViewController: UIViewController {
         }
         
         emptyLabel.isHidden = true
+    }
+}
+
+extension SearchViewController : UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let book = dataSource.itemIdentifier(for: indexPath) {
+            let detailVM = BookDetailViewModel(book: book)
+            let detailVC = BookDetailViewController(viewModel: detailVM)
+            navigationController?.pushViewController(detailVC, animated: true)
+        }
+        else {
+            return
+        }
+        
     }
 }
