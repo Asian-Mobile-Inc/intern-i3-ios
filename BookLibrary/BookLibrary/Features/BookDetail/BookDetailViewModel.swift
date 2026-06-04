@@ -10,28 +10,51 @@ import Combine
 
 class BookDetailViewModel {
     let book: Book
-    @Published private(set) var isSaved: Bool
-    @Published var message: String?
-    private static let savedBookIDsKey = "savedBookIDs"
+    private let repository : BookRepositoryProtocol
     
-    init(book: Book) {
+    @Published private(set) var isSaved: Bool = false
+    @Published var message: String?
+    private var cancellabels = Set<AnyCancellable>()
+    
+    init(book: Book, repository : BookRepositoryProtocol = Repository()) {
         self.book = book
-        self.isSaved = Self.savedBookIDs.contains(book.id)
+        self.repository = repository
+        self.isSavedBook(id : book.id)
     }
     
     func saveBook() {
-        guard !isSaved else {
-            return
-        }
+        repository.saveBook(book)
+            .receive(on: DispatchQueue.main)
+            .sink (
+                receiveCompletion: { [weak self] completion in
+                guard let self = self else { return }
+                switch completion {
+                case .finished:
+                    self.isSaved = true
+                    self.message = "This book saved to your library."
+                case .failure(let error):
+                    self.message = error.localizedDescription
+                }
+            }, receiveValue: { _ in })
+            .store(in: &cancellabels)
         
-        var savedBookIDs = Self.savedBookIDs
-        savedBookIDs.insert(book.id)
-        UserDefaults.standard.set(Array(savedBookIDs), forKey: Self.savedBookIDsKey)
-        isSaved = true
-        message = "Book saved to your library."
     }
-    
-    private static var savedBookIDs: Set<String> {
-        Set(UserDefaults.standard.stringArray(forKey: savedBookIDsKey) ?? [])
+    func isSavedBook(id : String) -> Void {
+        repository.isBookSaved(id: id)
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveCompletion: { [weak self] completion in
+                    switch completion {
+                    case .finished:
+                        
+                        break
+                    case .failure(let error):
+                        self?.message = error.localizedDescription
+                    }
+                
+            }, receiveValue: { [weak self] isSavedBook in
+                self?.isSaved = isSavedBook
+            })
+            .store(in: &cancellabels)
     }
 }
