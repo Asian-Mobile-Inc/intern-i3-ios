@@ -16,6 +16,7 @@ protocol BookRepositoryProtocol {
     func deleteBook(id: String) -> AnyPublisher<Void, Error>
     func updateBook(_ book: SavedBook) -> AnyPublisher<Void, Error>
     func isBookSaved(id: String) -> AnyPublisher<Bool, Error>
+    func fetchReadingStats() -> AnyPublisher<ReadingStats, Error>
 }
 
 protocol BookLocalDataSourceProtocol {
@@ -27,6 +28,21 @@ protocol BookLocalDataSourceProtocol {
 }
 
 class Repository: BookRepositoryProtocol {
+    func fetchReadingStats() -> AnyPublisher<ReadingStats, any Error> {
+        bookLocalDS.fetchSavedBooks()
+            .map { books in
+                let wantToRead = books.filter { $0.status == SavedBookState.wantToRead.rawValue }.count
+                let reading = books.filter { $0.status == SavedBookState.reading.rawValue }.count
+                let finished = books.filter { $0.status == SavedBookState.read.rawValue }.count
+                
+                return ReadingStats(
+                    readingCount: reading,
+                    wantToReadCount: wantToRead,
+                    finishedCount: finished )
+            }
+            .eraseToAnyPublisher()
+        }
+    
     
     private let apiService: APIServiceProtocol
     private let bookLocalDS : BookLocalDataSourceProtocol
