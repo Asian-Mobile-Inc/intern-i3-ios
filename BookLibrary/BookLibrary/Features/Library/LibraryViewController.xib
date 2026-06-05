@@ -10,6 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LibraryViewController" customModule="BookLibrary" customModuleProvider="target">
             <connections>
+                <outlet property="collectionView" destination="gkQ-A1-a5Y" id="j6o-ds-tmQ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

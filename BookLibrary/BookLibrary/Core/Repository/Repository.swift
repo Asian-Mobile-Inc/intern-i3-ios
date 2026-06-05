@@ -190,7 +190,6 @@ class BookLocalDataSource : BookLocalDataSourceProtocol {
                 let books = try context.fetch(request)
                 
                 guard let bookToUpdate = books.first else {
-                    promise(.success(()))
                     return
                 }
                 
