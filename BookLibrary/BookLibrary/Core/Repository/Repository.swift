@@ -121,14 +121,11 @@ class BookLocalDataSource : BookLocalDataSourceProtocol {
     }
     func fetchSavedBooks() -> AnyPublisher<[SavedBook], any Error> {
         return Future<[SavedBook], Error>
-        { [weak self] promise in
-            
-            guard let self = self else { return }
-            
+        { promise in
             do {
                 let request : NSFetchRequest = SavedBookEntity.fetchRequest()
                 
-                let entities = try context.fetch(request)
+                let entities = try self.context.fetch(request)
                 
                 let savedBooks = entities.map { SavedBook(entity: $0)}
                 
@@ -143,49 +140,45 @@ class BookLocalDataSource : BookLocalDataSourceProtocol {
     }
     
     func saveBook(_ book: Book) -> AnyPublisher<Void, any Error> {
-        return Future<Void, Error> { [weak self] promisse in
-            guard let self = self else { return }
-            
+        return Future<Void, Error> { promise in
             do {
                 let request = SavedBookEntity.fetchRequest()
                 request.predicate = NSPredicate(format: "id == %@", book.id )
+                request.fetchLimit = 1
                 
-                let existingBook = try context.fetch(request)
+                let existingBook = try self.context.fetch(request)
                 
                 if existingBook.isEmpty {
-                    let savedBook = SavedBookEntity(context: context)
+                    let savedBook = SavedBookEntity(context: self.context)
                     savedBook.updateFromBook(from: book)
-                    try context.save()
-                    promisse(.success(()))
+                    try self.context.save()
                 }
                 
-                return
-                
+                promise(.success(()))
             } catch {
-                promisse(.failure(error))
+                promise(.failure(error))
             }
         }
         .eraseToAnyPublisher()
     }
     
     func deleteBook(id: String) -> AnyPublisher<Void, any Error> {
-        return Future<Void, Error> { [weak self] promise in
-            
-            guard let self = self else { return }
-            
+        return Future<Void, Error> { promise in
             do {
                 let request = SavedBookEntity.fetchRequest()
                 request.predicate = NSPredicate(format: "id == %@", id)
+                request.fetchLimit = 1
                 
-                let book = try context.fetch(request)
+                let book = try self.context.fetch(request)
                 
                 guard let bookToDelete = book.first else {
                     promise(.success(()))
                     return
                 }
                 
-                context.delete(bookToDelete)
-                try context.save()
+                self.context.delete(bookToDelete)
+                try self.context.save()
+                promise(.success(()))
                 
             } catch {
                 promise(.failure(error))
@@ -195,22 +188,21 @@ class BookLocalDataSource : BookLocalDataSourceProtocol {
     }
     
     func updateBook(_ book: SavedBook) -> AnyPublisher<Void, any Error> {
-        return Future<Void, Error> { [weak self] promise in
-            
-            guard let self = self else { return }
-            
+        return Future<Void, Error> { promise in
             do {
                 let request = SavedBookEntity.fetchRequest()
                 request.predicate = NSPredicate(format: "id == %@", book.id)
+                request.fetchLimit = 1
                 
-                let books = try context.fetch(request)
+                let books = try self.context.fetch(request)
                 
                 guard let bookToUpdate = books.first else {
+                    promise(.success(()))
                     return
                 }
                 
                 bookToUpdate.update(from: book)
-                try context.save()
+                try self.context.save()
                 promise(.success(()))
                 
             } catch {
@@ -222,23 +214,15 @@ class BookLocalDataSource : BookLocalDataSourceProtocol {
     }
     
     func isBookSaved(id: String) -> AnyPublisher<Bool, any Error> {
-        return Future<Bool, Error> { [weak self] promise in
-            
-            guard let self = self else { return }
-            
+        return Future<Bool, Error> { promise in
             do {
                 let request = SavedBookEntity.fetchRequest()
                 request.predicate = NSPredicate(format: "id == %@", id)
+                request.fetchLimit = 1
                 
-                let book = try context.fetch(request)
+                let book = try self.context.fetch(request)
                 
-                if book.first != nil {
-                    promise(.success(true))
-                }
-                else {
-                    promise(.success(false))
-                    return
-                }
+                promise(.success(book.first != nil))
             } catch {
                 promise(.failure(error))
             }

@@ -187,9 +187,15 @@ class ExploreViewController: UIViewController {
     dataSource = UICollectionViewDiffableDataSource<ExploreSection, ExploreItem>(
       collectionView: collectionView
     ) { collectionView, indexPath, item in
-      let cell =
-        collectionView.dequeueReusableCell(
-          withReuseIdentifier: "bookExploreViewCell", for: indexPath) as! BookExploreViewCell
+      guard
+        let cell = collectionView.dequeueReusableCell(
+          withReuseIdentifier: "bookExploreViewCell",
+          for: indexPath
+        ) as? BookExploreViewCell
+      else {
+        return UICollectionViewCell()
+      }
+
       cell.configure(with: item.book)
       return cell
     }
@@ -197,18 +203,24 @@ class ExploreViewController: UIViewController {
     dataSource.supplementaryViewProvider = { [weak self] collectionView, kind, indexPath in
       guard kind == UICollectionView.elementKindSectionHeader else { return nil }
 
-      let headerView =
-        collectionView.dequeueReusableSupplementaryView(
+      guard
+        let headerView = collectionView.dequeueReusableSupplementaryView(
           ofKind: kind,
           withReuseIdentifier: SectionHeaderView.reuseIdentifier,
           for: indexPath
-        ) as! SectionHeaderView
-
-      if let self = self {
-        let section = self.dataSource.snapshot().sectionIdentifiers[indexPath.section]
-        headerView.configure(with: section.title)
+        ) as? SectionHeaderView,
+        let self
+      else {
+        return nil
       }
 
+      let sections = self.dataSource.snapshot().sectionIdentifiers
+      guard sections.indices.contains(indexPath.section) else {
+        return headerView
+      }
+
+      let section = sections[indexPath.section]
+      headerView.configure(with: section.title)
       return headerView
     }
 
