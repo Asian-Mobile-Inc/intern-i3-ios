@@ -10,6 +10,7 @@ import UIKit
 
 class ExploreViewController: UIViewController {
   @IBOutlet weak var collectionView: UICollectionView!
+  private let makeBookDetailViewController: @MainActor (Book) -> BookDetailViewController
   private struct ExploreItem: Hashable {
     let section: ExploreSection
     let book: Book
@@ -25,9 +26,22 @@ class ExploreViewController: UIViewController {
   }
 
   private var dataSource: UICollectionViewDiffableDataSource<ExploreSection, ExploreItem>!
-  private let viewModel = ExploreViewModel()
+  private let viewModel: ExploreViewModel
   private var cancellables = Set<AnyCancellable>()
     private var loadingIndicator = UIActivityIndicatorView(style: .large)
+
+  init(
+    viewModel: ExploreViewModel,
+    makeBookDetailViewController: @escaping @MainActor (Book) -> BookDetailViewController
+  ) {
+    self.viewModel = viewModel
+    self.makeBookDetailViewController = makeBookDetailViewController
+    super.init(nibName: "ExploreViewController", bundle: nil)
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -250,8 +264,7 @@ extension ExploreViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     guard let book = dataSource.itemIdentifier(for: indexPath) else { return }
 
-    let detailVM = BookDetailViewModel(book: book.book)
-    let detailVC = BookDetailViewController(viewModel: detailVM)
+    let detailVC = makeBookDetailViewController(book.book)
 
     navigationController?.pushViewController(detailVC, animated: true)
   }

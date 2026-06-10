@@ -51,7 +51,7 @@ final class MainTabBarController: UITabBarController {
 
   private func setupViewControllers() {
     let exploreNav = creatNavigationController(
-      rootViewController: ExploreViewController(),
+      rootViewController: container.makeExploreViewController(),
       title: "Explore",
       image: "house",
       selectedImage: "house.fill")

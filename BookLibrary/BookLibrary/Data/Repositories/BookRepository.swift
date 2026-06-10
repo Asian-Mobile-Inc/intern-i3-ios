@@ -9,13 +9,6 @@ import Foundation
 import Combine
 import CoreData
 
-protocol BookLocalDataSourceProtocol {
-    func fetchSavedBooks() -> AnyPublisher<[SavedBook], Error>
-    func saveBook(_ book: Book) -> AnyPublisher<Void, Error>
-    func deleteBook(id: String) -> AnyPublisher<Void, Error>
-    func updateBook(_ book: SavedBook) -> AnyPublisher<Void, Error>
-    func isBookSaved(id: String) -> AnyPublisher<Bool, Error>
-}
 
 class Repository: BookRepositoryProtocol {
     func fetchReadingStats() -> AnyPublisher<ReadingStats, any Error> {
@@ -65,8 +58,8 @@ class Repository: BookRepositoryProtocol {
         bookLocalDS.fetchSavedBooks()
     }
     
-    func saveBook(_ book: Book) -> AnyPublisher<Void, any Error> {
-        bookLocalDS.saveBook(book)
+    func saveBook(_ book: Book) async throws {
+        try await bookLocalDS.saveBook(book)
     }
     
     func deleteBook(id: String) -> AnyPublisher<Void, any Error> {
@@ -77,129 +70,7 @@ class Repository: BookRepositoryProtocol {
         bookLocalDS.updateBook(book)
     }
     
-    func isBookSaved(id: String) -> AnyPublisher<Bool, any Error> {
-        bookLocalDS.isBookSaved(id: id)
-    }
-}
-
-
-
-class BookLocalDataSource : BookLocalDataSourceProtocol {
-    private var coreData = CoreDataManager.shared
-    private var context = CoreDataManager.shared.context
-    
-    init(coreData: CoreDataManager = CoreDataManager.shared, context: NSManagedObjectContext = CoreDataManager.shared.context) {
-        self.coreData = coreData
-        self.context = context
-    }
-    func fetchSavedBooks() -> AnyPublisher<[SavedBook], any Error> {
-        return Future<[SavedBook], Error>
-        { promise in
-            do {
-                let request : NSFetchRequest = SavedBookEntity.fetchRequest()
-                
-                let entities = try self.context.fetch(request)
-                
-                let savedBooks = entities.map { SavedBook(entity: $0)}
-                
-                promise(.success(savedBooks))
-            }
-            catch {
-                promise(.failure(error))
-            }
-        }
-        .eraseToAnyPublisher()
-        
-    }
-    
-    func saveBook(_ book: Book) -> AnyPublisher<Void, any Error> {
-        return Future<Void, Error> { promise in
-            do {
-                let request = SavedBookEntity.fetchRequest()
-                request.predicate = NSPredicate(format: "id == %@", book.id )
-                request.fetchLimit = 1
-                
-                let existingBook = try self.context.fetch(request)
-                
-                if existingBook.isEmpty {
-                    let savedBook = SavedBookEntity(context: self.context)
-                    savedBook.updateFromBook(from: book)
-                    try self.context.save()
-                }
-                
-                promise(.success(()))
-            } catch {
-                promise(.failure(error))
-            }
-        }
-        .eraseToAnyPublisher()
-    }
-    
-    func deleteBook(id: String) -> AnyPublisher<Void, any Error> {
-        return Future<Void, Error> { promise in
-            do {
-                let request = SavedBookEntity.fetchRequest()
-                request.predicate = NSPredicate(format: "id == %@", id)
-                request.fetchLimit = 1
-                
-                let book = try self.context.fetch(request)
-                
-                guard let bookToDelete = book.first else {
-                    promise(.success(()))
-                    return
-                }
-                
-                self.context.delete(bookToDelete)
-                try self.context.save()
-                promise(.success(()))
-                
-            } catch {
-                promise(.failure(error))
-            }
-        }
-        .eraseToAnyPublisher()
-    }
-    
-    func updateBook(_ book: SavedBook) -> AnyPublisher<Void, any Error> {
-        return Future<Void, Error> { promise in
-            do {
-                let request = SavedBookEntity.fetchRequest()
-                request.predicate = NSPredicate(format: "id == %@", book.id)
-                request.fetchLimit = 1
-                
-                let books = try self.context.fetch(request)
-                
-                guard let bookToUpdate = books.first else {
-                    promise(.success(()))
-                    return
-                }
-                
-                bookToUpdate.update(from: book)
-                try self.context.save()
-                promise(.success(()))
-                
-            } catch {
-                promise(.failure(error))
-            }
-        }
-        .eraseToAnyPublisher()
-            
-    }
-    
-    func isBookSaved(id: String) -> AnyPublisher<Bool, any Error> {
-        return Future<Bool, Error> { promise in
-            do {
-                let request = SavedBookEntity.fetchRequest()
-                request.predicate = NSPredicate(format: "id == %@", id)
-                request.fetchLimit = 1
-                
-                let book = try self.context.fetch(request)
-                
-                promise(.success(book.first != nil))
-            } catch {
-                promise(.failure(error))
-            }
-        }
-        .eraseToAnyPublisher()
+    func isBookSaved(id: String) async throws -> Bool {
+        return try await bookLocalDS.isBookSaved(id: id)
     }
 }

@@ -7,21 +7,30 @@
 
 import Foundation
 
+@MainActor
 final class AppDIContainer {
+    private lazy var apiService = APIService()
+    private lazy var remoteDataSource = BookRemoteDataSource(
+        apiService: apiService
+    )
+    private lazy var localDataSource = BookLocalDataSource()
+    private lazy var repository = Repository(
+        bookLocalDS: localDataSource,
+        bookRemoteDS: remoteDataSource
+    )
+
+    func makeExploreViewController() -> ExploreViewController {
+        let viewModel = ExploreViewModel(
+            repository: repository
+        )
+
+        return ExploreViewController(
+            viewModel: viewModel,
+            makeBookDetailViewController: makeBookDetailViewController
+        )
+    }
+
     func makeSearchViewController() -> SearchViewController {
-        let apiService = APIService()
-
-        let remoteDS = BookRemoteDataSource(
-            apiService: apiService
-        )
-
-        let localDS = BookLocalDataSource()
-
-        let repository = Repository(
-            bookLocalDS: localDS,
-            bookRemoteDS: remoteDS
-        )
-
         let useCase = SearchBookUseCase(
             repository: repository
         )
@@ -30,6 +39,21 @@ final class AppDIContainer {
             searchBooksUseCase: useCase
         )
 
-        return SearchViewController(viewModel: viewModel)
+        return SearchViewController(
+            viewModel: viewModel,
+            makeBookDetailViewController: makeBookDetailViewController
+        )
+    }
+
+    func makeBookDetailViewController(book: Book) -> BookDetailViewController {
+        let useCase = SaveBookUseCase(
+            repository: repository
+        )
+        let viewModel = BookDetailViewModel(
+            book: book,
+            saveBookUseCase: useCase
+        )
+
+        return BookDetailViewController(viewModel: viewModel)
     }
 }

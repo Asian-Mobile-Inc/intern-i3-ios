@@ -47,10 +47,18 @@ class BookDetailViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] isSave in
                 guard let self = self else { return }
-                self.updateSaveButton(isSaved: isSave)
+                self.updateSaveButton(isSaved: isSave, isSaving: self.viewModel.isSaving)
             }
             .store(in: &cancellables)
         
+        viewModel.$isSaving
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isSaving in
+                guard let self = self else { return }
+                self.updateSaveButton(isSaved: self.viewModel.isSaved, isSaving: isSaving)
+            }
+            .store(in: &cancellables)
+
         viewModel.$message
             .receive(on: DispatchQueue.main)
             .sink { [weak self] message in
@@ -62,13 +70,13 @@ class BookDetailViewController: UIViewController {
             .store(in: &cancellables)
     }
     
-    private func updateSaveButton(isSaved: Bool) {
-        let title = isSaved ? "Saved" : "Save"
+    private func updateSaveButton(isSaved: Bool, isSaving: Bool = false) {
+        let title = isSaving ? "Saving..." : (isSaved ? "Saved" : "Save")
         let titleColor: UIColor = isSaved ? .red : .white
         
         saveButton.setTitle(title, for: .normal)
         saveButton.setTitle(title, for: .disabled)
-        saveButton.isEnabled = !isSaved
+        saveButton.isEnabled = !isSaved && !isSaving
         saveButton.tintColor = isSaved ? .systemGray6 : .systemBlue
         saveButton.setTitleColor(titleColor, for: .normal)
         saveButton.setTitleColor(titleColor, for: .disabled)
@@ -92,7 +100,9 @@ class BookDetailViewController: UIViewController {
     }
     
     @IBAction func didTapSaveBookButton(_ sender: Any) {
-        viewModel.saveBook()
+        Task {
+            await viewModel.saveBook()
+        }
     }
     
 }

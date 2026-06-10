@@ -10,6 +10,7 @@ import UIKit
 
 class SearchViewController: UIViewController {
     private let defaultEmptyMessage = "Search books by name, author..."
+    private let makeBookDetailViewController: @MainActor (Book) -> BookDetailViewController
 
   @IBOutlet weak var collectionView: UICollectionView!
   @IBOutlet weak var searchBarView: SearchBarView!
@@ -29,8 +30,12 @@ class SearchViewController: UIViewController {
     return label
   }()
 
-    init( viewModel : SearchViewModel) {
+    init(
+        viewModel : SearchViewModel,
+        makeBookDetailViewController: @escaping @MainActor (Book) -> BookDetailViewController
+    ) {
         self.viewModel = viewModel
+        self.makeBookDetailViewController = makeBookDetailViewController
         super.init(nibName: "SearchViewController", bundle: nil)
     }
     required init?(coder: NSCoder) {
@@ -236,8 +241,7 @@ class SearchViewController: UIViewController {
 extension SearchViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     if let book = dataSource.itemIdentifier(for: indexPath) {
-      let detailVM = BookDetailViewModel(book: book)
-      let detailVC = BookDetailViewController(viewModel: detailVM)
+      let detailVC = makeBookDetailViewController(book)
       navigationController?.pushViewController(detailVC, animated: true)
     } else {
       return

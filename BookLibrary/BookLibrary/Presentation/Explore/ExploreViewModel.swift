@@ -34,7 +34,7 @@ final class ExploreViewModel {
     private let repository: BookRepositoryProtocol
     private var cancellables = Set<AnyCancellable>()
 
-    init(repository: BookRepositoryProtocol = Repository()) {
+    init(repository: BookRepositoryProtocol) {
     self.repository = repository
     }
     
