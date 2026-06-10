@@ -10,7 +10,8 @@ import UIKit
 final class MainTabBarController: UITabBarController {
 
     private var isPresentSheet = false
-    
+    private let container = AppDIContainer()
+
   private lazy var btnMiddle: UIButton = {
     let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
     btn.setTitle("", for: .normal)
@@ -56,7 +57,7 @@ final class MainTabBarController: UITabBarController {
       selectedImage: "house.fill")
 
     let searchNav = creatNavigationController(
-      rootViewController: SearchViewController(),
+      rootViewController: container.makeSearchViewController(),
       title: "Search",
       image: "magnifyingglass",
       selectedImage: "magnifyingglass.fill")

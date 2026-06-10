@@ -6,3 +6,9 @@
 //
 
 import Foundation
+import Combine
+
+protocol SearchBooksUseCaseProtocol {
+    func execute(query: String) -> AnyPublisher<[Book], Error>
+}
+

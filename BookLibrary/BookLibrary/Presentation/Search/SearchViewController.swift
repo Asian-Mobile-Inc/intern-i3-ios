@@ -9,12 +9,12 @@ import Combine
 import UIKit
 
 class SearchViewController: UIViewController {
-  private let defaultEmptyMessage = "Search books by name, author..."
+    private let defaultEmptyMessage = "Search books by name, author..."
 
   @IBOutlet weak var collectionView: UICollectionView!
   @IBOutlet weak var searchBarView: SearchBarView!
 
-  private var viewModel = SearchViewModel()
+    private var viewModel : SearchViewModel
   private var dataSource: UICollectionViewDiffableDataSource<Int, Book>!
   private var cancellables = Set<AnyCancellable>()
   private var loadingIndicator = UIActivityIndicatorView(style: .large)
@@ -29,6 +29,13 @@ class SearchViewController: UIViewController {
     return label
   }()
 
+    init( viewModel : SearchViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: "SearchViewController", bundle: nil)
+    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = .systemBackground
@@ -153,7 +160,7 @@ class SearchViewController: UIViewController {
     searchBarView.textPublisher
       .receive(on: DispatchQueue.main)
       .sink { [weak self] text in
-        self?.viewModel.searchText = text
+        self?.viewModel.updateSearchText(text)
       }
       .store(in: &cancellables)
 

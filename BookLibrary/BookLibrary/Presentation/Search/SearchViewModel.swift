@@ -9,20 +9,24 @@ import Combine
 import Foundation
 
 class SearchViewModel {
-  @Published var isLoading: Bool = false
-  @Published var errorMessage: String? = nil
-  @Published var books: [Book] = []
-  @Published var searchText: String = ""
+  @Published private(set) var isLoading: Bool = false
+  @Published private(set) var errorMessage: String? = nil
+  @Published private(set) var books: [Book] = []
+  @Published private(set) var searchText: String = ""
 
-  private var repository: Repository
+    private var searchBooksUseCase : SearchBooksUseCaseProtocol
   private var cancellables = Set<AnyCancellable>()
 
-  init(repository: Repository = Repository()) {
-    self.repository = repository
+  init(searchBooksUseCase: SearchBooksUseCaseProtocol) {
+    self.searchBooksUseCase = searchBooksUseCase
     bindSearchText()
   }
 
-  func bindSearchText() {
+  func updateSearchText(_ text: String) {
+    searchText = text
+  }
+
+  private func bindSearchText() {
     self.$searchText
       .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
       .removeDuplicates()
@@ -45,7 +49,7 @@ class SearchViewModel {
         self.isLoading = true
         self.errorMessage = nil
 
-        return self.repository.searchBooks(query: query)
+          return self.searchBooksUseCase.execute(query: query)
           .receive(on: DispatchQueue.main)
           .handleEvents(receiveOutput: { [weak self] _ in
             self?.isLoading = false

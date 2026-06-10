@@ -6,3 +6,8 @@
 //
 
 import Foundation
+import Combine
+
+protocol BookRemoteDataSourceProtocol {
+    func searchBooks(query: String) -> AnyPublisher<[BookDTO], NetworkError>
+}
