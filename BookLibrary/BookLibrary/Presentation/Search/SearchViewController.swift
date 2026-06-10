@@ -38,6 +38,7 @@ class SearchViewController: UIViewController {
     setupEmptyLabel()
     configDataSource()
     bindViewModel()
+    setupKeyboardDismissGesture()
     updateEmptyState()
   }
 
@@ -106,6 +107,16 @@ class SearchViewController: UIViewController {
       emptyLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
       emptyLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
     ])
+  }
+
+  private func setupKeyboardDismissGesture() {
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+    tapGesture.cancelsTouchesInView = false
+    view.addGestureRecognizer(tapGesture)
+  }
+
+  @objc private func dismissKeyboard() {
+    view.endEditing(true)
   }
 
   //  MARK: CONFIG DATASOURCE

@@ -45,6 +45,8 @@ class SearchBarView: UIView {
         textField.layer.cornerRadius = 12
         textField.layer.masksToBounds = true
         textField.clearButtonMode = .whileEditing
+        textField.returnKeyType = .done
+        textField.delegate = self
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 1))
         textField.leftViewMode = .always
         
@@ -55,5 +57,12 @@ class SearchBarView: UIView {
     
     @objc func textFieldDidChange() {
         textPublisher.send(textField.text ?? "")
+    }
+}
+
+extension SearchBarView: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
