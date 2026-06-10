@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="QuoteDisplayView" customModule="MVC" customModuleProvider="target">
+            <connections>
+                <outlet property="contentView" destination="iN0-l3-epB" id="ownerContent"/>
+                <outlet property="titleLabel" destination="titleLbl-id" id="ownerTitle"/>
+                <outlet property="refreshButton" destination="refreshBtn-id" id="ownerRefresh"/>
+                <outlet property="tableView" destination="tableView-id" id="ownerTable"/>
+                <outlet property="footerLabel" destination="footerLbl-id" id="ownerFooter"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <!-- Header Stack: Title Label + Refresh Button -->
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="fill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="headerStack-id">
+                    <rect key="frame" x="20" y="59" width="353" height="34"/>
+                    <subviews>
+                        <!-- Title Label -->
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="📚 Bộ Sưu Tập Trích Dẫn" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="titleLbl-id">
+                            <rect key="frame" x="0" y="0" width="307" height="34"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                            <color key="textColor" systemColor="labelColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <!-- Refresh Button (chỉ hiển thị, không chức năng) -->
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="refreshBtn-id">
+                            <rect key="frame" x="315" y="0" width="38" height="34"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="38" id="refreshW"/>
+                            </constraints>
+                            <state key="normal">
+                                <imageReference key="image" image="arrow.clockwise" catalog="system" symbolScale="large"/>
+                            </state>
+                        </button>
+                    </subviews>
+                </stackView>
+                <!-- Table View -->
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" separatorStyle="none" style="plain" separatorInset="0 0 0 0" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="tableView-id">
+                    <rect key="frame" x="0" y="101" width="393" height="713"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                </tableView>
+                <!-- Footer Label -->
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Powered by DummyJSON API ✨" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="footerLbl-id">
+                    <rect key="frame" x="0" y="818" width="393" height="18"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" systemColor="tertiaryLabelColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <!-- Header Stack constraints -->
+                <constraint firstItem="headerStack-id" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="0" id="h1"/>
+                <constraint firstItem="headerStack-id" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="h2"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="headerStack-id" secondAttribute="trailing" constant="20" id="h3"/>
+                <!-- Table View constraints -->
+                <constraint firstItem="tableView-id" firstAttribute="top" secondItem="headerStack-id" secondAttribute="bottom" constant="8" id="t1"/>
+                <constraint firstItem="tableView-id" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="0" id="t2"/>
+                <constraint firstItem="iN0-l3-epB" firstAttribute="trailing" secondItem="tableView-id" secondAttribute="trailing" constant="0" id="t3"/>
+                <!-- Footer Label constraints -->
+                <constraint firstItem="footerLbl-id" firstAttribute="top" secondItem="tableView-id" secondAttribute="bottom" constant="4" id="f1"/>
+                <constraint firstItem="footerLbl-id" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="0" id="f2"/>
+                <constraint firstItem="iN0-l3-epB" firstAttribute="trailing" secondItem="footerLbl-id" secondAttribute="trailing" constant="0" id="f3"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="footerLbl-id" secondAttribute="bottom" constant="0" id="f4"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-95" y="154"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="arrow.clockwise" catalog="system" width="14" height="16"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="tertiaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.3" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
